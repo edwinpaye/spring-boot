@@ -15,7 +15,8 @@ public class Bus {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creation;
-    private int asientos;
+//    private Asientos asientos;
+//    private int asientos;
 
     public Long getId() {
         return id;
@@ -41,21 +42,21 @@ public class Bus {
         this.creation = creation;
     }
 
-    public int getAsientos() {
-        return asientos;
-    }
-
-    public void setAsientos(int asientos) {
-        this.asientos = asientos;
-    }
+//    public int getAsientos() {
+//        return asientos;
+//    }
+//
+//    public void setAsientos(int asientos) {
+//        this.asientos = asientos;
+//    }
 
     public Bus() {
     }
 
-    public Bus(Long id, String matricula, Date creation, int asientos) {
+    public Bus(Long id, String matricula, Date creation/*, int asientos*/) {
         this.id = id;
         this.matricula = matricula;
         this.creation = creation;
-        this.asientos = asientos;
+//        this.asientos = asientos;
     }
 }

@@ -31,11 +31,13 @@ public class BusService {
     }
 
     public Bus updateBusById(Long id, Bus bus){
-        if (busRepo.existsById(id)){
+//        if (busRepo.existsById(id)){
             bus.setId(id);
             return busRepo.save(bus);
-        }
-        return null;
+//        }
+//        Bus resp = busRepo.findById(bus.getId()).get();
+
+//        return
     }
 
     public boolean deleteBus(Bus bus){
@@ -56,5 +58,13 @@ public class BusService {
 
     public List<Bus> findBusesByExample(Bus bus){
         return busRepo.findAll(Example.of(bus));
+    }
+
+    public boolean existBusById(long id){
+        return busRepo.existsById(id);
+    }
+
+    public boolean existBusByExample(Bus exampleBus){
+        return busRepo.exists(Example.of(exampleBus));
     }
 }

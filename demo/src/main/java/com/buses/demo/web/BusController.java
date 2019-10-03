@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,7 @@ public class BusController {
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
+
     @ApiOperation(value = "Create a bus", response = Bus.class)
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Bus> createBus(@RequestBody Bus bus){
@@ -46,7 +48,7 @@ public class BusController {
     }
 
     @ApiOperation(value = "Update a bus", response = Bus.class)
-    @RequestMapping(method = RequestMethod.PATCH, value = "/{id}")
+    @RequestMapping(method = RequestMethod.PATCH, value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Bus> updateBus(@PathVariable long id, @RequestBody Bus bus){
         return new ResponseEntity(busService.updateBusById(id, bus), HttpStatus.OK);
     }
