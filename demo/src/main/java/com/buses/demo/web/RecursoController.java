@@ -23,7 +23,7 @@ public class RecursoController {
     private RecursoService recursoService;
 
     //    @ResponseBody()
-    @ApiOperation(value = "Search all recursos",response = Recurso.class)
+    @ApiOperation(value = "Search all recursos", response = Recurso.class)
     @RequestMapping(method = RequestMethod.GET)
     public Iterable<Recurso> getAllRecursos(){
         return recursoService.getAllRecursos();

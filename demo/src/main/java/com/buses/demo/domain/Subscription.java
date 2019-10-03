@@ -10,8 +10,8 @@ public class Subscription {
     @Id
     private Long id;
     private Date subDate;
-    @ManyToOne
-    private Teacher teacher;
+//    @ManyToOne
+//    private Teacher teacher;
 
     public Long getId() {
         return id;
@@ -29,11 +29,11 @@ public class Subscription {
         this.subDate = subDate;
     }
 
-    public Teacher getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
-    }
+//    public Teacher getTeacher() {
+//        return teacher;
+//    }
+//
+//    public void setTeacher(Teacher teacher) {
+//        this.teacher = teacher;
+//    }
 }
