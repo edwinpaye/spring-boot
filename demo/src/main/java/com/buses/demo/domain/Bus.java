@@ -1,7 +1,5 @@
 package com.buses.demo.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -12,11 +10,18 @@ public class Bus {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String matricula;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+//    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creation;
-//    private Asientos asientos;
-//    private int asientos;
+    private String destino;
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public void setDestino(String destino) {
+        this.destino = destino;
+    }
 
     public Long getId() {
         return id;
@@ -42,21 +47,12 @@ public class Bus {
         this.creation = creation;
     }
 
-//    public int getAsientos() {
-//        return asientos;
-//    }
-//
-//    public void setAsientos(int asientos) {
-//        this.asientos = asientos;
-//    }
+    public Bus() { }
 
-    public Bus() {
-    }
-
-    public Bus(Long id, String matricula, Date creation/*, int asientos*/) {
+    public Bus(Long id, String matricula, Date creation, String destino) {
         this.id = id;
         this.matricula = matricula;
         this.creation = creation;
-//        this.asientos = asientos;
+        this.destino = destino;
     }
 }

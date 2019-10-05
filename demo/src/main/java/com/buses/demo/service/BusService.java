@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -31,29 +30,17 @@ public class BusService {
     }
 
     public Bus updateBusById(Long id, Bus bus){
-//        if (busRepo.existsById(id)){
-            bus.setId(id);
-            return busRepo.save(bus);
-//        }
-//        Bus resp = busRepo.findById(bus.getId()).get();
-
-//        return
+        Bus resp = busRepo.findById(id).get();
+        resp.setId(id);
+        if (bus.getDestino() != null)
+            resp.setDestino(bus.getDestino());
+        if (bus.getMatricula() != null)
+            resp.setMatricula(bus.getMatricula());
+        return busRepo.save(resp);
     }
 
-    public boolean deleteBus(Bus bus){
-        if (busRepo.existsById(bus.getId())){
-            busRepo.delete(bus);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean deleteBusById(Long id){
-        if (busRepo.existsById(id)){
-            busRepo.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteBusById(Long id){
+        busRepo.deleteById(id);
     }
 
     public List<Bus> findBusesByExample(Bus bus){

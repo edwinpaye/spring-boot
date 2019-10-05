@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/buses")
@@ -23,19 +22,35 @@ public class BusController {
 
     @ApiOperation(value = "Search all buses", response = Bus.class)
     @RequestMapping(method = RequestMethod.GET)
-    public List<Bus> getAllBuses(){
-        return busService.getAllBuses();
+    public ResponseEntity<List<Bus>> getAllBuses(){
+        try {
+            return new ResponseEntity<>(busService.getAllBuses(), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @ApiOperation(value = "Search a bus with an ID", response = Bus.class)
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<Bus> getBusById(@PathVariable long id){
-        Optional<Bus> resp = busService.getBusById(id);
-        if (resp.isPresent())
-            return new ResponseEntity(resp.get(), HttpStatus.OK);
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        try {
+            if (busService.existBusById(id))
+                return new ResponseEntity(busService.getBusById(id).get(), HttpStatus.OK);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
+    @ApiOperation(value = "Search for buses that match an example", response = Bus.class)
+    @RequestMapping(method = RequestMethod.POST, value = "/search")
+    public ResponseEntity<List<Bus>> getBusByExample(@RequestBody Bus bus){
+        try {
+            return new ResponseEntity(busService.findBusesByExample(bus), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @ApiOperation(value = "Create a bus", response = Bus.class)
     @RequestMapping(method = RequestMethod.POST)
@@ -50,7 +65,27 @@ public class BusController {
     @ApiOperation(value = "Update a bus", response = Bus.class)
     @RequestMapping(method = RequestMethod.PATCH, value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Bus> updateBus(@PathVariable long id, @RequestBody Bus bus){
-        return new ResponseEntity(busService.updateBusById(id, bus), HttpStatus.OK);
+        try {
+            if (busService.existBusById(id))
+                return new ResponseEntity(busService.updateBusById(id, bus), HttpStatus.OK);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-//    public
+
+    @ApiOperation(value = "Delete a Bus with an Id")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+    public ResponseEntity<Void> deleteBusById(@PathVariable long id){
+        try {
+            if (busService.existBusById(id)){
+                busService.deleteBusById(id);
+                return new ResponseEntity(HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

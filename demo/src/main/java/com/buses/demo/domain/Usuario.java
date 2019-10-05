@@ -1,8 +1,10 @@
 package com.buses.demo.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+//import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 @Entity
@@ -11,24 +13,36 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+//    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creation;
     private String nombre;
     private String apellido;
+    @Email
     private String email;
+    @NotEmpty
+    private String password;
     private int telefono;
 
-    public Usuario(Long id, Date creation, String nombre, String apellido, String email, int telefono) {
+    public Usuario(Long id, Date creation, String nombre, String apellido, String email, String password, int telefono) {
         this.id = id;
         this.creation = creation;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
+        this.password = password;
         this.telefono = telefono;
     }
 
     public Usuario() {
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Long getId() {
