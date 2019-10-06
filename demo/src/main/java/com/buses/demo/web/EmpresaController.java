@@ -51,7 +51,7 @@ public class EmpresaController {
         }
     }
 
-    @ApiOperation(value = "Create new Empresa", response = Empresa.class)
+    @ApiOperation(value = "Create a new Empresa", response = Empresa.class)
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Empresa> addNewEmpresa(@RequestBody Empresa newEmpresa){
         try {
