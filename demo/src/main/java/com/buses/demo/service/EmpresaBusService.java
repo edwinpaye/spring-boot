@@ -5,6 +5,7 @@ import com.buses.demo.repository.EmpresaBusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,6 +23,7 @@ public class EmpresaBusService {
     }
 
     public EmpresaBus addNewEmpresaBus(EmpresaBus newEmpresaBus){
+        newEmpresaBus.setCreation(new Date());
         return empresaBusRepository.save(newEmpresaBus);
     }
 
@@ -31,6 +33,7 @@ public class EmpresaBusService {
             resp.setDestino(empresaBus.getDestino());
         if (empresaBus.getBus_id()!=null)
             resp.setBus_id(empresaBus.getBus_id());
+        resp.setActualizacion(new Date());
         return empresaBusRepository.save(resp);
     }
 

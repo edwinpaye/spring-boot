@@ -5,6 +5,7 @@ import com.buses.demo.repository.EmpresaDestinoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,6 +23,8 @@ public class EmpresaDestinoService {
     }
 
     public EmpresaDestino addNewEmpresaDestino(EmpresaDestino newEmpresaDestino){
+        newEmpresaDestino.setCreation(new Date());
+//        newEmpresaDestino.setFecha_salida();
         return empresaDestinoRepository.save(newEmpresaDestino);
     }
 

@@ -5,6 +5,7 @@ import com.buses.demo.repository.EmpresaUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,6 +23,7 @@ public class EmpresaUsuarioService {
     }
 
     public EmpresaUsuario addNewEmpresaUsuario(EmpresaUsuario newEmpresaUsuario){
+        newEmpresaUsuario.setCreacion(new Date());
         return empresaUsuarioRepository.save(newEmpresaUsuario);
     }
 
