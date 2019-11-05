@@ -5,11 +5,17 @@ import com.buses.demo.service.UsuarioService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -21,9 +27,18 @@ public class UsuarioController {
 
     @ApiOperation(value = "Search all Usuarios", response = Usuario.class)
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Usuario>> getAllUsuarios(){
+//    public ResponseEntity<List<Usuario>> getAllUsuarios(){
+    public ResponseEntity<Resources<Resource<Usuario>>> getAllUsuarios(){
         try {
-            return new ResponseEntity(usuarioService.getAllUsuarios(), HttpStatus.OK);
+            List<Resource<Usuario>> usuarios = usuarioService.getAllUsuarios().stream()
+                    .map(usuario -> new Resource<Usuario>(usuario,
+                            linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId())).withSelfRel(),
+                            linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(new Resources<Resource<Usuario>>(usuarios,
+                    linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withSelfRel()));
+//            return new ResponseEntity(usuarioService.getAllUsuarios(), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }

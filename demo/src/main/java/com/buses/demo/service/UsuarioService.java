@@ -53,6 +53,10 @@ public class UsuarioService {
         return usuarioRepo.existsById(id);
     }
 
+    public long countUsuarios(){
+        return usuarioRepo.count();
+    }
+
     public List<Usuario> findUsuariosByExample(Usuario usuario){
         return usuarioRepo.findAll(Example.of(usuario));
     }

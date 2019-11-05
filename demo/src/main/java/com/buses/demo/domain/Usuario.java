@@ -11,7 +11,7 @@ import java.util.Date;
 public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id;
 //    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
@@ -24,7 +24,7 @@ public class Usuario {
     private String password;
     private int telefono;
 
-    public Usuario(Long id, Date creation, String nombre, String apellido, String email, String password, int telefono) {
+    public Usuario(Date creation, String nombre, String apellido, String email, String password, int telefono) {
         this.id = id;
         this.creation = creation;
         this.nombre = nombre;

@@ -25,7 +25,7 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfo("Back Packer",
+        return new ApiInfo("Backpacker",
                 "buses api",
                 "1.0",
                 "urn:tos",
