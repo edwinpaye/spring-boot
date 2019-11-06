@@ -27,7 +27,6 @@ public class UsuarioController {
 
     @ApiOperation(value = "Search all Usuarios", response = Usuario.class)
     @RequestMapping(method = RequestMethod.GET)
-//    public ResponseEntity<List<Usuario>> getAllUsuarios(){
     public ResponseEntity<Resources<Resource<Usuario>>> getAllUsuarios(){
         try {
             List<Resource<Usuario>> usuarios = usuarioService.getAllUsuarios().stream()
@@ -38,7 +37,6 @@ public class UsuarioController {
 
             return ResponseEntity.ok(new Resources<Resource<Usuario>>(usuarios,
                     linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withSelfRel()));
-//            return new ResponseEntity(usuarioService.getAllUsuarios(), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -46,11 +44,13 @@ public class UsuarioController {
 
     @ApiOperation(value = "Search a User with an Id", response = Usuario.class)
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
-    public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long id){
+    public ResponseEntity<Resource<Usuario>> getUsuarioById(@PathVariable Long id){
         try {
-            if (usuarioService.existUsuarioById(id))
-                return new ResponseEntity(usuarioService.getUsuarioById(id), HttpStatus.OK);
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+//            Usuario usuario = usuarioService.getUsuarioById(id).orElseThrow(() -> new RuntimeException("Could not find usuario " + id));
+//            if (usuarioService.existUsuarioById(id))
+                return ResponseEntity.ok(new Resource<Usuario>(usuarioService.getUsuarioById(id),
+                    linkTo(methodOn(UsuarioController.class).getUsuarioById(id)).withSelfRel(),
+                    linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")));
         }catch (Exception e){
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }

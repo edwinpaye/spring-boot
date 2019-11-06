@@ -25,7 +25,6 @@ public class Usuario {
     private int telefono;
 
     public Usuario(Date creation, String nombre, String apellido, String email, String password, int telefono) {
-        this.id = id;
         this.creation = creation;
         this.nombre = nombre;
         this.apellido = apellido;
