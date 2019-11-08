@@ -47,10 +47,11 @@ public class UsuarioController {
     public ResponseEntity<Resource<Usuario>> getUsuarioById(@PathVariable Long id){
         try {
 //            Usuario usuario = usuarioService.getUsuarioById(id).orElseThrow(() -> new RuntimeException("Could not find usuario " + id));
-//            if (usuarioService.existUsuarioById(id))
+            if (usuarioService.existUsuarioById(id))
                 return ResponseEntity.ok(new Resource<Usuario>(usuarioService.getUsuarioById(id),
                     linkTo(methodOn(UsuarioController.class).getUsuarioById(id)).withSelfRel(),
                     linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")));
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }catch (Exception e){
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -58,9 +59,17 @@ public class UsuarioController {
 
     @ApiOperation(value = "Search for buses that match an example", response = Usuario.class)
     @RequestMapping(method = RequestMethod.POST, value = "/search")
-    public ResponseEntity<List<Usuario>> getUsuariosByExample(@RequestBody Usuario usuario){
+    public ResponseEntity<Resources<Resource<Usuario>>> getUsuariosByExample(@RequestBody Usuario user){
         try {
-            return new ResponseEntity(usuarioService.findUsuariosByExample(usuario), HttpStatus.OK);
+//            return new ResponseEntity(usuarioService.findUsuariosByExample(usuario), HttpStatus.OK);
+            List<Resource<Usuario>> usuarios = usuarioService.findUsuariosByExample(user).stream()
+                    .map(usuario -> new Resource<Usuario>(usuario,
+                            linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId())).withSelfRel(),
+                            linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(new Resources<Resource<Usuario>>(usuarios,
+                    linkTo(methodOn(UsuarioController.class).getUsuariosByExample(user)).withSelfRel()));
         }catch (Exception e){
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -68,9 +77,14 @@ public class UsuarioController {
 
     @ApiOperation(value = "Add new Usuario", response = Usuario.class)
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Usuario> addNewUsuario(@RequestBody Usuario newUsuario){
+    public ResponseEntity<Resource<Usuario>> addNewUsuario(@RequestBody Usuario newUsuario){
         try {
-            return new ResponseEntity(usuarioService.addNewUsuario(newUsuario), HttpStatus.CREATED);
+            Usuario usuario = usuarioService.addNewUsuario(newUsuario);
+            return ResponseEntity.created(linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId()))
+                    .toUri()).body(new Resource<>(usuario,
+                            linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId())).withSelfRel(),
+                            linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")));
+//            return new ResponseEntity(usuarioService.addNewUsuario(newUsuario), HttpStatus.CREATED);
         }catch (Exception e){
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
