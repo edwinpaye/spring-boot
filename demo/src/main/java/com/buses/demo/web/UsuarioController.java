@@ -51,7 +51,7 @@ public class UsuarioController {
                 return ResponseEntity.ok(new Resource<Usuario>(usuarioService.getUsuarioById(id),
                     linkTo(methodOn(UsuarioController.class).getUsuarioById(id)).withSelfRel(),
                     linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")));
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch (Exception e){
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -96,10 +96,12 @@ public class UsuarioController {
         try {
             if (usuarioService.existUsuarioById(id)){
                 Usuario user = usuarioService.updateUsuarioById(id, usuario);
-                return ResponseEntity.ok(new Resource<>());
+                return ResponseEntity.ok(new Resource<>(user,
+                        linkTo(methodOn(UsuarioController.class).getUsuarioById(user.getId())).withSelfRel(),
+                        linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")));
             }
 //                return new ResponseEntity(usuarioService.updateUsuarioById(id, usuario), HttpStatus.OK);
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }catch (Exception e){
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -111,9 +113,9 @@ public class UsuarioController {
         try {
             if (usuarioService.existUsuarioById(id)){
                 usuarioService.deleteUsuarioById(id);
-                return new ResponseEntity(HttpStatus.OK);
+                return new ResponseEntity(HttpStatus.MOVED_PERMANENTLY);
             }
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }catch (Exception e){
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
