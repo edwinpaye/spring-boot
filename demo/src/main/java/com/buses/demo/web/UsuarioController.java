@@ -61,7 +61,7 @@ public class UsuarioController {
     @RequestMapping(method = RequestMethod.POST, value = "/search")
     public ResponseEntity<Resources<Resource<Usuario>>> getUsuariosByExample(@RequestBody Usuario user){
         try {
-//            return new ResponseEntity(usuarioService.findUsuariosByExample(usuario), HttpStatus.OK);
+//            return new ResponseEntity(usuarioService.findUsuariosByExample(user), HttpStatus.OK);
             List<Resource<Usuario>> usuarios = usuarioService.findUsuariosByExample(user).stream()
                     .map(usuario -> new Resource<Usuario>(usuario,
                             linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId())).withSelfRel(),
@@ -70,6 +70,23 @@ public class UsuarioController {
 
             return ResponseEntity.ok(new Resources<Resource<Usuario>>(usuarios,
                     linkTo(methodOn(UsuarioController.class).getUsuariosByExample(user)).withSelfRel()));
+        }catch (Exception e){
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @ApiOperation(value = "Search for buses that match an example", response = Usuario.class)
+    @RequestMapping(method = RequestMethod.POST, value = "/name=?")
+    public ResponseEntity<Resources<Resource<Usuario>>> getUsuariosByName(@PathVariable String name){
+        try {
+//            List<Resource<Usuario>> usuarios = usuarioService.findUsuariosByExample(user).stream()
+//                    .map(usuario -> new Resource<Usuario>(usuario,
+//                            linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId())).withSelfRel(),
+//                            linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")))
+//                    .collect(Collectors.toList());
+//
+//            return ResponseEntity.ok(new Resources<Resource<Usuario>>(usuarios,
+//                    linkTo(methodOn(UsuarioController.class).getUsuariosByExample(user)).withSelfRel()));
         }catch (Exception e){
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
