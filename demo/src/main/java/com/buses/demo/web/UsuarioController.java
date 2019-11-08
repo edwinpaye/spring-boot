@@ -94,8 +94,10 @@ public class UsuarioController {
     @RequestMapping(method = RequestMethod.PATCH, value = "/{id}")
     public ResponseEntity<Usuario> updateUsuarioById(@PathVariable Long id, @RequestBody Usuario usuario){
         try {
-            if (usuarioService.existUsuarioById(id))
-                return new ResponseEntity(usuarioService.updateUsuarioById(id, usuario), HttpStatus.OK);
+            if (usuarioService.existUsuarioById(id)){
+                return ResponseEntity.ok();
+            }
+//                return new ResponseEntity(usuarioService.updateUsuarioById(id, usuario), HttpStatus.OK);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }catch (Exception e){
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
