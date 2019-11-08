@@ -92,10 +92,11 @@ public class UsuarioController {
 
     @ApiOperation(value = "Update a Usuario with an ID", response = Usuario.class)
     @RequestMapping(method = RequestMethod.PATCH, value = "/{id}")
-    public ResponseEntity<Usuario> updateUsuarioById(@PathVariable Long id, @RequestBody Usuario usuario){
+    public ResponseEntity<Resource<Usuario>> updateUsuarioById(@PathVariable Long id, @RequestBody Usuario usuario){
         try {
             if (usuarioService.existUsuarioById(id)){
-                return ResponseEntity.ok();
+                Usuario user = usuarioService.updateUsuarioById(id, usuario);
+                return ResponseEntity.ok(new Resource<>());
             }
 //                return new ResponseEntity(usuarioService.updateUsuarioById(id, usuario), HttpStatus.OK);
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
