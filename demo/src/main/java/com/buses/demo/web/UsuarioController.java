@@ -47,10 +47,12 @@ public class UsuarioController {
     public ResponseEntity<Resource<Usuario>> getUsuarioById(@PathVariable Long id){
         try {
 //            Usuario usuario = usuarioService.getUsuarioById(id).orElseThrow(() -> new RuntimeException("Could not find usuario " + id));
-            if (usuarioService.existUsuarioById(id))
-                return ResponseEntity.ok(new Resource<Usuario>(usuarioService.getUsuarioById(id),
+            if (usuarioService.existUsuarioById(id)){
+                Usuario user = usuarioService.getUsuarioById(id);
+                return ResponseEntity.ok(new Resource<Usuario>(user,
                     linkTo(methodOn(UsuarioController.class).getUsuarioById(id)).withSelfRel(),
                     linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")));
+            }
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch (Exception e){
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -76,17 +78,17 @@ public class UsuarioController {
     }
 
     @ApiOperation(value = "Search for buses that match an example", response = Usuario.class)
-    @RequestMapping(method = RequestMethod.POST, value = "/name=?")
-    public ResponseEntity<Resources<Resource<Usuario>>> getUsuariosByName(@PathVariable String name){
+    @RequestMapping(method = RequestMethod.GET, value = "/search")
+    public ResponseEntity<Resources<Resource<Usuario>>> getUsuariosByName(@RequestParam(value = "name", required = false, defaultValue = "name") String name){
         try {
-//            List<Resource<Usuario>> usuarios = usuarioService.findUsuariosByExample(user).stream()
-//                    .map(usuario -> new Resource<Usuario>(usuario,
-//                            linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId())).withSelfRel(),
-//                            linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")))
-//                    .collect(Collectors.toList());
-//
-//            return ResponseEntity.ok(new Resources<Resource<Usuario>>(usuarios,
-//                    linkTo(methodOn(UsuarioController.class).getUsuariosByExample(user)).withSelfRel()));
+            List<Resource<Usuario>> usuarios = usuarioService.findUsuariosByName(name).stream()
+                    .map(usuario -> new Resource<Usuario>(usuario,
+                            linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId())).withSelfRel(),
+                            linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel(name)))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(new Resources<Resource<Usuario>>(usuarios,
+                    linkTo(methodOn(UsuarioController.class).getUsuariosByName(name)).withSelfRel()));
         }catch (Exception e){
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }

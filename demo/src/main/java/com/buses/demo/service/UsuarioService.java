@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -59,5 +60,9 @@ public class UsuarioService {
 
     public List<Usuario> findUsuariosByExample(Usuario usuario){
         return usuarioRepo.findAll(Example.of(usuario));
+    }
+
+    public List<Usuario> findUsuariosByName(String name){
+        return usuarioRepo.findAll();
     }
 }
