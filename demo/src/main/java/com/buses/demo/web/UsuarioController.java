@@ -15,10 +15,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/usuarios")
 @Api(value="onlinestore", description="Operations")
 public class UsuarioController {
@@ -27,7 +26,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @ApiOperation(value = "Search all Usuarios", response = Usuario.class)
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = { "application/hal+json" })
     public ResponseEntity<Resources<Resource<Usuario>>> getAllUsuarios(){
         try {
             List<Resource<Usuario>> usuarios = usuarioService.getAllUsuarios().stream()
