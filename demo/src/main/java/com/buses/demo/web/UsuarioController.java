@@ -18,6 +18,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/usuarios")
 @Api(value="onlinestore", description="Operations")
 public class UsuarioController {

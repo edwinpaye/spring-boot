@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/buses")
 @Api(value="onlinestore", description="Operations")
 public class BusController {
