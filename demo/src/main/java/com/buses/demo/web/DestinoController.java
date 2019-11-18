@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/destino")
 @Api(value="onlinestore", description="Operations")
 public class DestinoController {
