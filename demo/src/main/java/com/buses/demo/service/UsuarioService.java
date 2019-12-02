@@ -63,6 +63,6 @@ public class UsuarioService {
     }
 
     public List<Usuario> findUsuariosByName(String name){
-        return usuarioRepo.findAll();
+        return usuarioRepo.findByNombreContainingIgnoreCase(name);
     }
 }

@@ -7,7 +7,12 @@ import java.util.List;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    List<Usuario> findByNombreContainingIgnoreCase(String title);
+    List<Usuario> findByNombreContainingIgnoreCase(String name);
 
-    List<Usuario> findByNombreNotContainingIgnoreCase(String title);
+    List<Usuario> findByNombreNotContainingIgnoreCase(String name);
+
+//    @Query("SELECT m FROM Movie m WHERE m.title LIKE %:title%")
+//    List<Movie> searchByTitleLike(@Param("title") String title);
+//    @Query("SELECT m FROM Movie m WHERE m.rating LIKE ?1%")
+//    List<Movie> searchByRatingStartsWith(String rating);
 }

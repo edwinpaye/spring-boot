@@ -85,7 +85,7 @@ public class UsuarioController {
             List<Resource<Usuario>> usuarios = usuarioService.findUsuariosByName(name).stream()
                     .map(usuario -> new Resource<Usuario>(usuario,
                             linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId())).withSelfRel(),
-                            linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel(name)))
+                            linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")))
                     .collect(Collectors.toList());
 
             return ResponseEntity.ok(new Resources<Resource<Usuario>>(usuarios,
