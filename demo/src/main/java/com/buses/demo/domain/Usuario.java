@@ -18,9 +18,9 @@ public class Usuario {
     private Date creation;
     private String nombre;
     private String apellido;
-    @Email
+    @Email(message = "email should be a valid email")
     private String email;
-    @NotEmpty
+    @NotEmpty(message = "password must not be empty")
     private String password;
     private int telefono;
 
