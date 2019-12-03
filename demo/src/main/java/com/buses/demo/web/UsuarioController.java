@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,13 +77,12 @@ public class UsuarioController {
 
     @ApiOperation(value = "Add new Usuario", response = Usuario.class)
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Resource<Usuario>> addNewUsuario(@RequestBody Usuario newUsuario){
+    public ResponseEntity<Resource<Usuario>> addNewUsuario(@Valid @RequestBody Usuario newUsuario){
         Usuario usuario = usuarioService.addNewUsuario(newUsuario);
         return ResponseEntity.created(linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId()))
                 .toUri()).body(new Resource<>(usuario,
                         linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId())).withSelfRel(),
                         linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")));
-//            return new ResponseEntity(usuarioService.addNewUsuario(newUsuario), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Update a Usuario with an ID", response = Usuario.class)
