@@ -22,8 +22,8 @@ public class UsuarioService {
     }
 
     public Usuario getUsuarioById(long id) throws RecordNotFoundException {
-        return usuarioRepo.findById(id).map((usuario -> {return usuario;}))
-                .orElseThrow(() -> new RecordNotFoundException(""));
+        return usuarioRepo.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("Invalid usuario id : " + id));
     }
 
     public Usuario addNewUsuario(Usuario newUsuario){
