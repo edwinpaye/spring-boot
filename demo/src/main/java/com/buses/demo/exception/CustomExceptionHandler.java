@@ -3,11 +3,9 @@ package com.buses.demo.exception;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -28,27 +26,24 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(RecordNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleValidationExceptions(RecordNotFoundException ex) {
+    public ResponseEntity<ErrorResponse> handleRecordNotFoundExceptions(RecordNotFoundException ex) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorResponse error = new ErrorResponse("Record Not Found", details);
         return new ResponseEntity(error, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        List<String> details = ex.getBindingResult().getAllErrors().stream().map((error) -> {
-            return error.getDefaultMessage();}).collect(Collectors.toList());
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+//        List<String> details = ex.getBindingResult().getAllErrors().stream().map((error) ->
+//            error.getDefaultMessage()).collect(Collectors.toList());
+//        return new ResponseEntity(new ErrorResponse("Validation Failed", details), HttpStatus.BAD_REQUEST);
+//    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        List<String> details = ex.getBindingResult().getAllErrors().stream().map((error) ->
+            error.getDefaultMessage()).collect(Collectors.toList());
         return new ResponseEntity(new ErrorResponse("Validation Failed", details), HttpStatus.BAD_REQUEST);
     }
-
-//    @Override
-//    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-//        List<String> details = new ArrayList<>();
-//        for(ObjectError error : ex.getBindingResult().getAllErrors()) {
-//            details.add(error.getDefaultMessage());
-//        }
-//        ErrorResponse error = new ErrorResponse("Validation Failed", details);
-//        return new ResponseEntity(error, HttpStatus.BAD_REQUEST);
-//    }
 }
