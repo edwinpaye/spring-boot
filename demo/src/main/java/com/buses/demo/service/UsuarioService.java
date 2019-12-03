@@ -20,7 +20,7 @@ public class UsuarioService {
         return usuarioRepo.findAll();
     }
 
-    public Usuario getUsuarioById(long id){
+    public Usuario getUsuarioById(long id) {
         return usuarioRepo.findById(id).get();
     }
 
