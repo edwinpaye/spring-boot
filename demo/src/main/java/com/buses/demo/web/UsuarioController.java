@@ -46,18 +46,15 @@ public class UsuarioController {
     @ApiOperation(value = "Search a User with an Id", response = Usuario.class)
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<Resource<Usuario>> getUsuarioById(@PathVariable Long id){
-        try {
-//            Usuario usuario = usuarioService.getUsuarioById(id).orElseThrow(() -> new RuntimeException("Could not find usuario " + id));
-            if (usuarioService.existUsuarioById(id)){
-                Usuario user = usuarioService.getUsuarioById(id);
-                return ResponseEntity.ok(new Resource<Usuario>(user,
-                    linkTo(methodOn(UsuarioController.class).getUsuarioById(id)).withSelfRel(),
-                    linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")));
-            }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch (Exception e){
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+//        try {
+            Usuario user = usuarioService.getUsuarioById(id);
+            return ResponseEntity.ok(new Resource<Usuario>(user,
+                linkTo(methodOn(UsuarioController.class).getUsuarioById(id)).withSelfRel(),
+                linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")));
+//            }
+//        }catch (Exception e){
+//            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
     @ApiOperation(value = "Search for buses that match an example", response = Usuario.class)

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class UsuarioService {
 
     public Usuario getUsuarioById(long id) throws RecordNotFoundException {
         return usuarioRepo.findById(id)
-                .orElseThrow(() -> new RecordNotFoundException("Invalid usuario id : " + id));
+                .orElseThrow(() -> new RecordNotFoundException("Could not find usuario: " + id));
     }
 
     public Usuario addNewUsuario(Usuario newUsuario){
