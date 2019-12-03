@@ -1,6 +1,7 @@
 package com.buses.demo.service;
 
 import com.buses.demo.domain.Usuario;
+import com.buses.demo.exception.RecordNotFoundException;
 import com.buses.demo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -20,8 +21,9 @@ public class UsuarioService {
         return usuarioRepo.findAll();
     }
 
-    public Usuario getUsuarioById(long id) {
-        return usuarioRepo.findById(id).get();
+    public Usuario getUsuarioById(long id) throws RecordNotFoundException {
+        return usuarioRepo.findById(id).map((usuario -> {return usuario;}))
+                .orElseThrow(() -> new RecordNotFoundException(""));
     }
 
     public Usuario addNewUsuario(Usuario newUsuario){
