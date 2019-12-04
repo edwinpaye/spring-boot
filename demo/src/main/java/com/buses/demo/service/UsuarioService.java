@@ -5,6 +5,8 @@ import com.buses.demo.exception.RecordNotFoundException;
 import com.buses.demo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -22,7 +24,7 @@ public class UsuarioService {
 
     public Usuario getUsuarioById(long id) throws RecordNotFoundException {
         return usuarioRepo.findById(id)
-                .orElseThrow(() -> new RecordNotFoundException("Could not find usuario: " + id));
+            .orElseThrow(() -> new RecordNotFoundException("Could not find usuario: " + id));
     }
 
     public Usuario addNewUsuario(Usuario newUsuario){
@@ -70,5 +72,9 @@ public class UsuarioService {
 
     public List<Usuario> findUsuariosByName(String name){
         return usuarioRepo.findByNombreContainingIgnoreCase(name);
+    }
+
+    public Page<Usuario> getAllUsuarios(Pageable newPageable){
+        return usuarioRepo.findAll(newPageable);
     }
 }
