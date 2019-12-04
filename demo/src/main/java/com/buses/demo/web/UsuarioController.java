@@ -97,10 +97,7 @@ public class UsuarioController {
     @ApiOperation(value = "Delete a Usuario with an ID")
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     public ResponseEntity<Void> deleteUsuarioById(@PathVariable Long id){
-        if (usuarioService.existUsuarioById(id)){
-            usuarioService.deleteUsuarioById(id);
-            return new ResponseEntity(HttpStatus.MOVED_PERMANENTLY);
-        }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        usuarioService.deleteUsuarioById(id);
+        return new ResponseEntity(HttpStatus.MOVED_PERMANENTLY);
     }
 }
