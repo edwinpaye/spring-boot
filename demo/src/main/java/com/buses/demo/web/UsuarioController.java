@@ -45,7 +45,7 @@ public class UsuarioController {
     }
 
     @ApiOperation(value = "Page all Usuarios", response = Usuario.class)
-    @RequestMapping(method = RequestMethod.GET, produces = { "application/hal+json" })
+    @RequestMapping(method = RequestMethod.GET, value = "/pages", produces = { "application/hal+json" })
     public ResponseEntity<Page<Usuario>> getPageAllUsuarios(
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer pagina){
         Page<Usuario> page = usuarioService.getAllUsuarios(
