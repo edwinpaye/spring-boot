@@ -1,6 +1,7 @@
 package com.buses.demo.web;
 
 import com.buses.demo.domain.Usuario;
+import com.buses.demo.exception.RecordNotFoundException;
 import com.buses.demo.service.UsuarioService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -97,7 +98,8 @@ public class UsuarioController {
     @ApiOperation(value = "Delete a Usuario with an ID")
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     public ResponseEntity<Void> deleteUsuarioById(@PathVariable Long id){
-        usuarioService.deleteUsuarioById(id);
+        if (!usuarioService.deleteUsuarioById(id))
+            throw new RecordNotFoundException("Could not find usuario: " + id);
         return new ResponseEntity(HttpStatus.MOVED_PERMANENTLY);
     }
 }

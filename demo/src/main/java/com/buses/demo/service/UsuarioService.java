@@ -49,10 +49,11 @@ public class UsuarioService {
         return usuarioRepo.save(updated);
     }
 
-    public void deleteUsuarioById(long id) throws RecordNotFoundException{
-        if (usuarioRepo.existsById(id))
+    public boolean deleteUsuarioById(long id) throws RecordNotFoundException{
+        if (!usuarioRepo.existsById(id))
             throw new RecordNotFoundException("Could not find usuario: " + id);
         usuarioRepo.deleteById(id);
+        return !usuarioRepo.existsById(id);
     }
 
     public boolean existUsuarioById(long id){
