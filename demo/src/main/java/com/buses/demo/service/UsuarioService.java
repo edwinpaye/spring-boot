@@ -30,7 +30,7 @@ public class UsuarioService {
         return usuarioRepo.save(newUsuario);
     }
 
-    public Usuario updateUsuarioById(long id, Usuario usuario){
+    public Usuario updateUsuarioById(long id, Usuario usuario) throws RecordNotFoundException {
         Usuario updated = usuarioRepo.findById(id).map((resp)->{
             if (usuario.getApellido()!=null)
                 resp.setApellido(usuario.getApellido());
@@ -45,7 +45,7 @@ public class UsuarioService {
             if (usuario.getTelefono()!=0)
                 resp.setTelefono(usuario.getTelefono());
             return resp;
-        }).orElseThrow(()-> new RecordNotFoundException("Could not find usuario: " + id));
+        }).orElseThrow(() -> new RecordNotFoundException("Could not find usuario: " + id));
         return usuarioRepo.save(updated);
     }
 

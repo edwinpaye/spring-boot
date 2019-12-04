@@ -88,13 +88,10 @@ public class UsuarioController {
     @ApiOperation(value = "Update a Usuario with an ID", response = Usuario.class)
     @RequestMapping(method = RequestMethod.PATCH, value = "/{id}")
     public ResponseEntity<Resource<Usuario>> updateUsuarioById(@PathVariable Long id, @RequestBody Usuario usuario){
-        if (usuarioService.existUsuarioById(id)){
-            Usuario user = usuarioService.updateUsuarioById(id, usuario);
-            return ResponseEntity.ok(new Resource<>(user,
-                    linkTo(methodOn(UsuarioController.class).getUsuarioById(user.getId())).withSelfRel(),
-                    linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")));
-        }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
+        Usuario user = usuarioService.updateUsuarioById(id, usuario);
+        return ResponseEntity.ok(new Resource<>(user,
+                linkTo(methodOn(UsuarioController.class).getUsuarioById(user.getId())).withSelfRel(),
+                linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")));
     }
 
     @ApiOperation(value = "Delete a Usuario with an ID")
