@@ -44,11 +44,12 @@ public class UsuarioController {
                 linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withSelfRel()));
     }
 
-    @ApiOperation(value = "Search all Usuarios", response = Usuario.class)
-    @RequestMapping(method = RequestMethod.GET, value = "/page", produces = { "application/hal+json" })
-    public ResponseEntity<Page<Usuario>> getPageAllUsuarios(){
+    @ApiOperation(value = "Page all Usuarios", response = Usuario.class)
+    @RequestMapping(method = RequestMethod.GET, produces = { "application/hal+json" })
+    public ResponseEntity<Page<Usuario>> getPageAllUsuarios(
+            @RequestParam(value = "page", required = false, defaultValue = "0") Integer pagina){
         Page<Usuario> page = usuarioService.getAllUsuarios(
-            PageRequest.of(0, 5, Sort.by("price").descending().and(Sort.by("name"))));
+            PageRequest.of(pagina, 2, Sort.by("nombre").descending()/*.and(Sort.by("name"))*/));
         return ResponseEntity.ok(page);
     }
 
@@ -76,7 +77,8 @@ public class UsuarioController {
 
     @ApiOperation(value = "Search usuarios by name", response = Usuario.class)
     @RequestMapping(method = RequestMethod.GET, value = "/search")
-    public ResponseEntity<Resources<Resource<Usuario>>> getUsuariosByName(@RequestParam(value = "name", required = false, defaultValue = "name") String name){
+    public ResponseEntity<Resources<Resource<Usuario>>> getUsuariosByName(
+            @RequestParam(value = "name", required = false, defaultValue = "name") String name){
         List<Resource<Usuario>> usuarios = usuarioService.findUsuariosByName(name).stream()
             .map(usuario -> new Resource<Usuario>(usuario,
                 linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId())).withSelfRel(),
