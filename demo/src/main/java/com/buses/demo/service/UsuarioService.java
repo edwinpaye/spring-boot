@@ -31,20 +31,22 @@ public class UsuarioService {
     }
 
     public Usuario updateUsuarioById(long id, Usuario usuario){
-        Usuario resp = usuarioRepo.findById(id).get();
-        if (usuario.getApellido()!=null)
-            resp.setApellido(usuario.getApellido());
-        if (usuario.getCreation()!=null)
-            resp.setCreation(usuario.getCreation());
-        if (usuario.getEmail()!=null)
-            resp.setEmail(usuario.getEmail());
-        if (usuario.getNombre()!=null)
-            resp.setNombre(usuario.getNombre());
-        if (usuario.getPassword()!=null)
-            resp.setPassword(usuario.getPassword());
-        if (usuario.getTelefono()!=0)
-            resp.setTelefono(usuario.getTelefono());
-        return usuarioRepo.save(resp);
+        Usuario updated = usuarioRepo.findById(id).map((resp)->{
+            if (usuario.getApellido()!=null)
+                resp.setApellido(usuario.getApellido());
+            if (usuario.getCreation()!=null)
+                resp.setCreation(usuario.getCreation());
+            if (usuario.getEmail()!=null)
+                resp.setEmail(usuario.getEmail());
+            if (usuario.getNombre()!=null)
+                resp.setNombre(usuario.getNombre());
+            if (usuario.getPassword()!=null)
+                resp.setPassword(usuario.getPassword());
+            if (usuario.getTelefono()!=0)
+                resp.setTelefono(usuario.getTelefono());
+            return resp;
+        }).orElseThrow(()-> new RecordNotFoundException("Could not find usuario: " + id));
+        return usuarioRepo.save(updated);
     }
 
     public void deleteUsuarioById(long id){
