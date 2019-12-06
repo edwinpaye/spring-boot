@@ -57,13 +57,10 @@ public class UsuarioController {
     @ApiOperation(value = "Search a User with an Id", response = Usuario.class)
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<Resource<Usuario>> getUsuarioById(@PathVariable Long id){
-//        Stream.of("hola").map(dato -> dato.trim()).map(ResponseEntity::ok).findFirst().get();
         return usuarioService.getUsuarioById(id)
-            .map(usuario -> {
-                return new Resource<>(usuario,
+            .map(usuario -> new Resource<>(usuario,
                     linkTo(methodOn(UsuarioController.class).getUsuarioById(id)).withSelfRel(),
-                    linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios"));
-            })
+                    linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")))
             .map(ResponseEntity::ok)
             .orElseThrow(() -> new RecordNotFoundException("Could not find usuario: " + id));
     }
@@ -71,38 +68,38 @@ public class UsuarioController {
     @ApiOperation(value = "Search for buses that match an example", response = Usuario.class)
     @RequestMapping(method = RequestMethod.POST, value = "/search")
     public ResponseEntity<Resources<Resource<Usuario>>> getUsuariosByExample(@RequestBody Usuario user){
-        List<Resource<Usuario>> usuarios = usuarioService.findUsuariosByExample(user).stream()
-            .map(usuario -> new Resource<Usuario>(usuario,
+        return usuarioService.findUsuariosByExample(user).stream()
+            .map(usuario -> new Resource<>(usuario,
                 linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId())).withSelfRel(),
                 linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")))
-            .collect(Collectors.toList());
-
-        return ResponseEntity.ok(new Resources<Resource<Usuario>>(usuarios,
-                linkTo(methodOn(UsuarioController.class).getUsuariosByExample(user)).withSelfRel()));
+            .collect(Collectors.collectingAndThen(Collectors.toList(), usuarios -> ResponseEntity.ok(
+                new Resources<>(usuarios,
+                linkTo(methodOn(UsuarioController.class).getUsuariosByExample(user)).withSelfRel()))));
     }
 
     @ApiOperation(value = "Search usuarios by name", response = Usuario.class)
     @RequestMapping(method = RequestMethod.GET, value = "/search")
     public ResponseEntity<Resources<Resource<Usuario>>> getUsuariosByName(
             @RequestParam(value = "name", required = false, defaultValue = "name") String name){
-        List<Resource<Usuario>> usuarios = usuarioService.findUsuariosByName(name).stream()
-            .map(usuario -> new Resource<Usuario>(usuario,
+        return usuarioService.findUsuariosByName(name).stream()
+            .map(usuario -> new Resource<>(usuario,
                 linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId())).withSelfRel(),
                 linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")))
-            .collect(Collectors.toList());
-
-        return ResponseEntity.ok(new Resources<Resource<Usuario>>(usuarios,
-            linkTo(methodOn(UsuarioController.class).getUsuariosByName(name)).withSelfRel()));
+            .collect(Collectors.collectingAndThen(Collectors.toList(),
+                    usuarios -> ResponseEntity.ok(new Resources<>(usuarios,
+                    linkTo(methodOn(UsuarioController.class).getUsuariosByName(name)).withSelfRel()))));
     }
 
     @ApiOperation(value = "Add new Usuario", response = Usuario.class)
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Resource<Usuario>> addNewUsuario(@Valid @RequestBody Usuario newUsuario){
-        Usuario usuario = usuarioService.addNewUsuario(newUsuario);
-        return ResponseEntity.created(linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId()))
-            .toUri()).body(new Resource<>(usuario,
+        return Stream.of(usuarioService.addNewUsuario(newUsuario))
+            .map(usuario -> ResponseEntity.created(
+                linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId())).toUri())
+                .body(new Resource<>(usuario,
                 linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId())).withSelfRel(),
-                linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")));
+                linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios"))))
+            .findFirst().get();
     }
 
     @ApiOperation(value = "Update a Usuario with an ID", response = Usuario.class)
@@ -110,7 +107,6 @@ public class UsuarioController {
     public ResponseEntity<Resource<Usuario>> updateUsuarioById(
             @PathVariable Long id, @RequestBody Usuario usuario){
         Usuario user = usuarioService.updateUsuarioById(id, usuario);
-//        Collectors.
         return ResponseEntity.ok(new Resource<>(user,
             linkTo(methodOn(UsuarioController.class).getUsuarioById(user.getId())).withSelfRel(),
             linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")));
