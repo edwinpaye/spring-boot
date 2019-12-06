@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -34,14 +36,13 @@ public class UsuarioController {
     @ApiOperation(value = "Search all Usuarios", response = Usuario.class)
     @RequestMapping(method = RequestMethod.GET, produces = { "application/hal+json" })
     public ResponseEntity<Resources<Resource<Usuario>>> getAllUsuarios(){
-        List<Resource<Usuario>> usuarios = usuarioService.getAllUsuarios().stream()
-            .map(usuario -> new Resource<Usuario>(usuario,
+        return usuarioService.getAllUsuarios().stream()
+            .map(usuario -> new Resource<>(usuario,
                 linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId())).withSelfRel(),
                 linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")))
-            .collect(Collectors.toList());
-
-        return ResponseEntity.ok(new Resources<Resource<Usuario>>(usuarios,
-                linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withSelfRel()));
+            .collect(Collectors.collectingAndThen(Collectors.toList(),
+                resources -> ResponseEntity.ok(new Resources<>(resources,
+                    linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withSelfRel()))));
     }
 
     @ApiOperation(value = "Page all Usuarios", response = Usuario.class)
@@ -56,10 +57,15 @@ public class UsuarioController {
     @ApiOperation(value = "Search a User with an Id", response = Usuario.class)
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public ResponseEntity<Resource<Usuario>> getUsuarioById(@PathVariable Long id){
-        Usuario user = usuarioService.getUsuarioById(id);
-        return ResponseEntity.ok(new Resource<Usuario>(user,
-            linkTo(methodOn(UsuarioController.class).getUsuarioById(id)).withSelfRel(),
-            linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")));
+//        Stream.of("hola").map(dato -> dato.trim()).map(ResponseEntity::ok).findFirst().get();
+        return usuarioService.getUsuarioById(id)
+            .map(usuario -> {
+                return new Resource<>(usuario,
+                    linkTo(methodOn(UsuarioController.class).getUsuarioById(id)).withSelfRel(),
+                    linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios"));
+            })
+            .map(ResponseEntity::ok)
+            .orElseThrow(() -> new RecordNotFoundException("Could not find usuario: " + id));
     }
 
     @ApiOperation(value = "Search for buses that match an example", response = Usuario.class)
@@ -101,8 +107,10 @@ public class UsuarioController {
 
     @ApiOperation(value = "Update a Usuario with an ID", response = Usuario.class)
     @RequestMapping(method = RequestMethod.PATCH, value = "/{id}")
-    public ResponseEntity<Resource<Usuario>> updateUsuarioById(@PathVariable Long id, @RequestBody Usuario usuario){
+    public ResponseEntity<Resource<Usuario>> updateUsuarioById(
+            @PathVariable Long id, @RequestBody Usuario usuario){
         Usuario user = usuarioService.updateUsuarioById(id, usuario);
+//        Collectors.
         return ResponseEntity.ok(new Resource<>(user,
             linkTo(methodOn(UsuarioController.class).getUsuarioById(user.getId())).withSelfRel(),
             linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")));
