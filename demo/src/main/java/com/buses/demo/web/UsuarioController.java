@@ -6,15 +6,16 @@ import com.buses.demo.service.UsuarioService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedResources;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.ResourceAssembler;
-import org.springframework.hateoas.Resources;
+import org.springframework.hateoas.*;
+import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,16 +52,16 @@ public class UsuarioController {
     @RequestMapping(method = RequestMethod.GET, value = "/pages", produces = { "application/hal+json" })
     public ResponseEntity<PagedResources<Usuario>> getPageAllUsuarios(
 //            @RequestParam(value = "page", required = false, defaultValue = "0") Integer pagina,
-            Pageable pageable,
-            PagedResourcesAssembler paged){
-        Page < Usuario > products = usuarioService.getAllUsuarios(pageable);
-        PagedResources< Usuario > pr = paged.toResource(products, linkTo(UsuarioController.class).slash("/products").withSelfRel());
-//        HttpHeaders responseHeaders = new HttpHeaders();
-//        responseHeaders.add("Link", createLinkHeader(pr));
-        return new ResponseEntity < > (paged.toResource(products, linkTo(UsuarioController.class).slash("/products").withSelfRel()), HttpStatus.OK);
+            @PageableDefault(page = 0, size = 20) Pageable pageable, PagedResourcesAssembler paged){
 //        Page<Usuario> page = usuarioService.getAllUsuarios(
 //            PageRequest.of(pagina, 2, Sort.by("nombre").descending()/*.and(Sort.by("name"))*/));
-//        return ResponseEntity.ok(page);
+//        new ApplicationEventPublisher().pu
+        Page < Usuario > page = usuarioService.getAllUsuarios(pageable);
+        PagedResources< Usuario > pr = paged.toResource(page,
+                linkTo(UsuarioController.class).slash("/pages").withSelfRel());
+//        HttpHeaders responseHeaders = new HttpHeaders();
+//        responseHeaders.add("Link", createLinkHeader(pr));
+        return ResponseEntity.ok(pr);
     }
 
     @ApiOperation(value = "Search a User with an Id", response = Usuario.class)

@@ -1,6 +1,6 @@
 package com.buses.demo.domain;
 
-//import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -14,6 +14,7 @@ public class Usuario {
     @GeneratedValue
     private Long id;
 //    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creation;
     private String nombre;
@@ -57,6 +58,7 @@ public class Usuario {
         return creation;
     }
 
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     public void setCreation(Date creation) {
         this.creation = creation;
     }

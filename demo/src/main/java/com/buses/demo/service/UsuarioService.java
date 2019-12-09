@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -22,9 +23,9 @@ public class UsuarioService {
         return usuarioRepo.findAll();
     }
 
-    public Usuario getUsuarioById(long id) throws RecordNotFoundException {
-        return usuarioRepo.findById(id)
-            .orElseThrow(() -> new RecordNotFoundException("Could not find usuario: " + id));
+    public Optional<Usuario> getUsuarioById(long id) throws RecordNotFoundException {
+        return usuarioRepo.findById(id);
+//            .orElseThrow(() -> new RecordNotFoundException());
     }
 
     public Usuario addNewUsuario(Usuario newUsuario){
