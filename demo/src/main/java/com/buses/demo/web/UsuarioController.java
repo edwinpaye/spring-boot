@@ -3,20 +3,13 @@ package com.buses.demo.web;
 import com.buses.demo.domain.Usuario;
 import com.buses.demo.exception.RecordNotFoundException;
 import com.buses.demo.service.UsuarioService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationListener;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.*;
-import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,9 +43,19 @@ public class UsuarioController {
     }
 
     @ApiOperation(value = "Page all Usuarios", response = Usuario.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
+                    value = "Results page you want to retrieve (0..N)", defaultValue = "0"),
+            @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
+                    value = "Number of records per page.", defaultValue = "5"),
+            @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
+                    value = "Sorting criteria in the format: property(,asc|desc). " +
+                            "Default sort order is ascending. " +
+                            "Multiple sort criteria are supported.")
+    })
     @RequestMapping(method = RequestMethod.GET, value = "/pages", produces = { "application/hal+json" })
     public ResponseEntity<PagedResources<Usuario>> getPageAllUsuarios(
-            @PageableDefault(page = 0, size = 10)Pageable pageable, PagedResourcesAssembler<Usuario> paged){
+                 @PageableDefault(page = 0, size = 10)Pageable pageable, PagedResourcesAssembler<Usuario> paged){
 //            PageRequest.of(1, 2, Sort.by("nombre").descending()/*.and(Sort.by("name"))*/)
         Page < Usuario > page = usuarioService.getAllUsuarios(pageable);
         PagedResources pr = paged.toResource(page, usuario -> new Resource(usuario,
