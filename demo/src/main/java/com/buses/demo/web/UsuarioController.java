@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationListener;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -51,16 +52,12 @@ public class UsuarioController {
     @ApiOperation(value = "Page all Usuarios", response = Usuario.class)
     @RequestMapping(method = RequestMethod.GET, value = "/pages", produces = { "application/hal+json" })
     public ResponseEntity<PagedResources<Usuario>> getPageAllUsuarios(
-//            @RequestParam(value = "page", required = false, defaultValue = "0") Integer pagina,
-            @PageableDefault(page = 0, size = 20) Pageable pageable, PagedResourcesAssembler paged){
-//        Page<Usuario> page = usuarioService.getAllUsuarios(
-//            PageRequest.of(pagina, 2, Sort.by("nombre").descending()/*.and(Sort.by("name"))*/));
-//        new ApplicationEventPublisher().pu
+            @PageableDefault(page = 0, size = 10)Pageable pageable, PagedResourcesAssembler<Usuario> paged){
+//            PageRequest.of(1, 2, Sort.by("nombre").descending()/*.and(Sort.by("name"))*/)
         Page < Usuario > page = usuarioService.getAllUsuarios(pageable);
-        PagedResources< Usuario > pr = paged.toResource(page,
-                linkTo(UsuarioController.class).slash("/pages").withSelfRel());
-//        HttpHeaders responseHeaders = new HttpHeaders();
-//        responseHeaders.add("Link", createLinkHeader(pr));
+        PagedResources pr = paged.toResource(page, usuario -> new Resource(usuario,
+                linkTo(methodOn(UsuarioController.class).getUsuarioById(usuario.getId())).withSelfRel(),
+                linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withRel("usuarios")));
         return ResponseEntity.ok(pr);
     }
 
