@@ -16,6 +16,7 @@ public class Usuario {
 //    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 //    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(updatable = false)
     private Date creation;
     private String nombre;
     private String apellido;
