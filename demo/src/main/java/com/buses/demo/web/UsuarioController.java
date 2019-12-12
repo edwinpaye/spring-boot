@@ -1,5 +1,6 @@
 package com.buses.demo.web;
 
+import com.buses.demo.config.ApiPageable;
 import com.buses.demo.domain.Usuario;
 import com.buses.demo.exception.RecordNotFoundException;
 import com.buses.demo.service.UsuarioService;
@@ -13,6 +14,7 @@ import org.springframework.hateoas.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.util.stream.Collectors;
@@ -42,20 +44,14 @@ public class UsuarioController {
                     linkTo(methodOn(UsuarioController.class).getAllUsuarios()).withSelfRel()))));
     }
 
+    @ApiPageable
     @ApiOperation(value = "Page all Usuarios", response = Usuario.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query",
-                    value = "Results page you want to retrieve (0..N)", defaultValue = "0"),
-            @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query",
-                    value = "Number of records per page.", defaultValue = "5"),
-            @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
-                    value = "Sorting criteria in the format: property(,asc|desc). " +
-                            "Default sort order is ascending. " +
-                            "Multiple sort criteria are supported.")
-    })
     @RequestMapping(method = RequestMethod.GET, value = "/pages", produces = { "application/hal+json" })
     public ResponseEntity<PagedResources<Usuario>> getPageAllUsuarios(
-                 @PageableDefault(page = 0, size = 10)Pageable pageable, PagedResourcesAssembler<Usuario> paged){
+            @ApiIgnore(
+                    "Ignored because swagger ui shows the wrong params, " +
+                            "instead they are explained in the implicit params"
+            ) @PageableDefault(page = 0, size = 5)Pageable pageable, PagedResourcesAssembler<Usuario> paged){
 //            PageRequest.of(1, 2, Sort.by("nombre").descending()/*.and(Sort.by("name"))*/)
         Page < Usuario > page = usuarioService.getAllUsuarios(pageable);
         PagedResources pr = paged.toResource(page, usuario -> new Resource(usuario,
