@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "clients")
-public class Cliente {
+public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,9 +31,9 @@ public class Cliente {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date create;
 
-    public Cliente(Long id_client, @NotEmpty String name, @NotEmpty String lastName,
-                   @Email(message = "email should be a valid email") String email,
-                   Picture picture, Long phone, @NotNull Date create) {
+    public Client(Long id_client, @NotEmpty String name, @NotEmpty String lastName,
+                  @Email(message = "email should be a valid email") String email,
+                  Picture picture, Long phone, @NotNull Date create) {
         this.id_client = id_client;
         this.name = name;
         this.lastName = lastName;
@@ -43,7 +43,7 @@ public class Cliente {
         this.create = create;
     }
 
-    public Cliente() {}
+    public Client() {}
 
     public Long getPhone() {
         return phone;

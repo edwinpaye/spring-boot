@@ -22,6 +22,8 @@ public class User {
     private String lastName;
     @Email(message = "email should be a valid email")
     private String email;
+    @NotEmpty(message = "password must not be empty")
+    private String password;
     //direccion
     private String address;
     @OneToOne(cascade = {CascadeType.ALL})
@@ -35,15 +37,25 @@ public class User {
 
     public User(Long id_user, @NotEmpty String name, @NotEmpty String lastName,
                 @Email(message = "email should be a valid email") String email,
+                @NotEmpty(message = "password must not be empty") String password,
                 String address, Picture picture, Long phone, @NotNull Date create) {
         this.id_user = id_user;
         this.name = name;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
         this.address = address;
         this.picture = picture;
         this.phone = phone;
         this.create = create;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public User() {}
