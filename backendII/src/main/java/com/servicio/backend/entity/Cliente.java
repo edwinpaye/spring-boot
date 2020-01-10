@@ -14,7 +14,7 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_client;
     @NotEmpty
     private String name;
     @NotEmpty
@@ -22,17 +22,19 @@ public class Cliente {
     private String lastName;
     @Email(message = "email should be a valid email")
     private String email;
-    private String picture;
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "id_picture")
+    private Picture picture;
     private Long phone;
     @NotNull
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date create;
 
-    public Cliente(Long id, @NotEmpty String name, @NotEmpty String lastName,
+    public Cliente(Long id_client, @NotEmpty String name, @NotEmpty String lastName,
                    @Email(message = "email should be a valid email") String email,
-                   String picture, Long phone, @NotNull Date create) {
-        this.id = id;
+                   Picture picture, Long phone, @NotNull Date create) {
+        this.id_client = id_client;
         this.name = name;
         this.lastName = lastName;
         this.email = email;
@@ -51,12 +53,12 @@ public class Cliente {
         this.phone = phone;
     }
 
-    public Long getId() {
-        return id;
+    public Long getId_client() {
+        return id_client;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_client(Long id_client) {
+        this.id_client = id_client;
     }
 
     public String getName() {
@@ -83,11 +85,11 @@ public class Cliente {
         this.email = email;
     }
 
-    public String getPicture() {
+    public Picture getPicture() {
         return picture;
     }
 
-    public void setPicture(String picture) {
+    public void setPicture(Picture picture) {
         this.picture = picture;
     }
 
