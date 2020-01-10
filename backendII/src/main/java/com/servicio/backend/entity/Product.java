@@ -26,7 +26,8 @@ public class Product {
     private Long price;
     private String author;
 
-    public Product(Long id_product, @NotEmpty String name, Picture picture, @NotNull Date create, Long price, String author) {
+    public Product(Long id_product, @NotEmpty String name, Picture picture,
+                   @NotNull Date create, Long price, String author) {
         this.id_product = id_product;
         this.name = name;
         this.picture = picture;
