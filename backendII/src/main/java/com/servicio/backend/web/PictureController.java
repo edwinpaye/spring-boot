@@ -7,10 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +16,8 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
+@RequestMapping("/image")
 public class PictureController {
 
 
@@ -27,7 +26,7 @@ public class PictureController {
 
     public void getImage(HttpServletResponse response) throws IOException {
 
-        ClassPathResource imgFile = new ClassPathResource("image/amazing.jpg");
+        ClassPathResource imgFile = new ClassPathResource("pictures/amazing.jpg");
 
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         StreamUtils.copy(imgFile.getInputStream(), response.getOutputStream());
@@ -37,7 +36,7 @@ public class PictureController {
             produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<byte[]> getImage() throws IOException {
 
-        ClassPathResource imgFile = new ClassPathResource("image/image2.jpg");
+        ClassPathResource imgFile = new ClassPathResource("pictures/image2.jpg");
         byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
 
         return ResponseEntity
@@ -50,7 +49,7 @@ public class PictureController {
             produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<InputStreamResource> getImag() throws IOException {
 
-        ClassPathResource imgFile = new ClassPathResource("image/image3.jpg");
+        ClassPathResource imgFile = new ClassPathResource("pictures/image3.jpg");
 
         return ResponseEntity
                 .ok()
@@ -60,9 +59,10 @@ public class PictureController {
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST,
             consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @CrossOrigin
     public ResponseEntity<String> uploadFile(@RequestPart("file") MultipartFile file) {
         try {
-            File testFile = new File("test.jpg");
+            File testFile = new File("src/main/resources/pictures"+file.getOriginalFilename());
             FileUtils.writeByteArrayToFile(testFile, file.getBytes());
 //            List<String> lines = FileUtils.readLines(testFile);
 //            lines.forEach(line -> System.out.println(line));

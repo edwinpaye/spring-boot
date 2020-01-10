@@ -1,6 +1,7 @@
 package com.servicio.backend.service;
 
 import com.servicio.backend.entity.Product;
+import com.servicio.backend.exception.RecordNotFoundException;
 import com.servicio.backend.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -45,11 +46,14 @@ public class ProductService {
         return productRepo.save(resp);
     }
 
-    public void deleteProductById(Long id){
+    public boolean deleteProducttById(long id) throws RecordNotFoundException {
+        if (!productRepo.existsById(id))
+            throw new RecordNotFoundException("Could not find producto: " + id);
         productRepo.deleteById(id);
+        return !productRepo.existsById(id);
     }
 
-    public List<Product> findClientByExample(Product product){
+    public List<Product> findProductByExample(Product product){
         return productRepo.findAll(Example.of(product));
     }
 

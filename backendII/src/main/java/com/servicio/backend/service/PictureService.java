@@ -1,6 +1,7 @@
 package com.servicio.backend.service;
 
 import com.servicio.backend.entity.Picture;
+import com.servicio.backend.exception.RecordNotFoundException;
 import com.servicio.backend.repository.PictureRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -37,8 +38,11 @@ public class PictureService {
         return pictureRpo.save(resp);
     }
 
-    public void deletePictureById(Long id){
+    public boolean deletePictureById(long id) throws RecordNotFoundException {
+        if (!pictureRpo.existsById(id))
+            throw new RecordNotFoundException("Could not find picture: " + id);
         pictureRpo.deleteById(id);
+        return !pictureRpo.existsById(id);
     }
 
     public List<Picture> findPictureByExample(Picture picture){

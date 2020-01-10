@@ -1,6 +1,7 @@
 package com.servicio.backend.service;
 
 import com.servicio.backend.entity.Client;
+import com.servicio.backend.exception.RecordNotFoundException;
 import com.servicio.backend.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -45,8 +46,11 @@ public class ClientService {
         return clientRepo.save(resp);
     }
 
-    public void deleteClientById(Long id){
+    public boolean deleteClientById(long id) throws RecordNotFoundException {
+        if (!clientRepo.existsById(id))
+            throw new RecordNotFoundException("Could not find client: " + id);
         clientRepo.deleteById(id);
+        return !clientRepo.existsById(id);
     }
 
     public List<Client> findClientByExample(Client client){

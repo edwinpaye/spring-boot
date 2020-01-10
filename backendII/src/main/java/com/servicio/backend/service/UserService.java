@@ -1,6 +1,7 @@
 package com.servicio.backend.service;
 
 import com.servicio.backend.entity.User;
+import com.servicio.backend.exception.RecordNotFoundException;
 import com.servicio.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -49,8 +50,11 @@ public class UserService {
         return userRepo.save(resp);
     }
 
-    public void deleteUserById(Long id){
+    public boolean deleteUserById(long id) throws RecordNotFoundException {
+        if (!userRepo.existsById(id))
+            throw new RecordNotFoundException("Could not find user: " + id);
         userRepo.deleteById(id);
+        return !userRepo.existsById(id);
     }
 
     public List<User> findUserByExample(User user){
