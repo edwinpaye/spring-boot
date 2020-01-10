@@ -1,6 +1,5 @@
 package com.servicio.backend.web;
 
-import com.servicio.backend.entity.Client;
 import com.servicio.backend.entity.Product;
 import com.servicio.backend.exception.RecordNotFoundException;
 import com.servicio.backend.service.ProductService;
