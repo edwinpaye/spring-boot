@@ -16,7 +16,7 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepo;
 
-    public List<Client> getAllBuses(){
+    public List<Client> getAllClients(){
         return clientRepo.findAll();
     }
 
@@ -45,7 +45,7 @@ public class ClientService {
         return clientRepo.save(resp);
     }
 
-    public void deleteBusById(Long id){
+    public void deleteClientById(Long id){
         clientRepo.deleteById(id);
     }
 
