@@ -16,7 +16,8 @@ public class Product {
     private Long id_product;
     @NotEmpty
     private String name;
-    @OneToOne(cascade = {CascadeType.ALL})
+    @NotEmpty(message = "picture must not be empty")
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_picture")
     private Picture picture;
     @NotNull

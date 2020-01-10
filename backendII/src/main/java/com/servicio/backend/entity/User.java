@@ -26,7 +26,7 @@ public class User {
     private String password;
     //direccion
     private String address;
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_picture")
     private Picture picture;
     private Long phone;

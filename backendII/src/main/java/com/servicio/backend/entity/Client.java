@@ -22,7 +22,7 @@ public class Client {
     private String lastName;
     @Email(message = "email should be a valid email")
     private String email;
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_picture")
     private Picture picture;
     private Long phone;
