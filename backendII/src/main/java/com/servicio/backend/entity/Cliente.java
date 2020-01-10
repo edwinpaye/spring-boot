@@ -9,7 +9,8 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
-public class cliente {
+@Table(name = "clients")
+public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,14 +18,28 @@ public class cliente {
     @NotEmpty
     private String name;
     @NotEmpty
+    @Column(name = "last_name")
     private String lastName;
-    @Email
+    @Email(message = "email should be a valid email")
     private String email;
     private String picture;
     @NotNull
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date create;
+
+    public Cliente(Long id, @NotEmpty String name, @NotEmpty String lastName,
+                   @Email(message = "email should be a valid email") String email,
+                   String picture, @NotNull Date create) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.picture = picture;
+        this.create = create;
+    }
+
+    public Cliente() {}
 
     public Long getId() {
         return id;
