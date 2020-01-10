@@ -17,7 +17,6 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
 
-
     @Autowired
     private ProductService productService;
 
@@ -48,9 +47,9 @@ public class ProductController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
-    public ResponseEntity<Void> deleteClientById(@PathVariable Long id){
-        if (!productService.deleteClientById(id))
-            throw new RecordNotFoundException("Could not find usuario: " + id);
+    public ResponseEntity<Void> deleteById(@PathVariable Long id){
+        if (!productService.deleteProducttById(id))
+            throw new RecordNotFoundException("Could not find product: " + id);
         return new ResponseEntity(HttpStatus.MOVED_PERMANENTLY);
     }
 }

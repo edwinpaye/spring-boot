@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/user")
+@RequestMapping("/client")
 public class ClientController {
 
     @Autowired
@@ -48,7 +48,7 @@ public class ClientController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
     public ResponseEntity<Void> deleteClientById(@PathVariable Long id){
         if (!clientService.deleteClientById(id))
-            throw new RecordNotFoundException("Could not find usuario: " + id);
+            throw new RecordNotFoundException("Could not find client: " + id);
         return new ResponseEntity(HttpStatus.MOVED_PERMANENTLY);
     }
 }
