@@ -23,6 +23,7 @@ public class Cliente {
     @Email(message = "email should be a valid email")
     private String email;
     private String picture;
+    private Long phone;
     @NotNull
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -30,16 +31,25 @@ public class Cliente {
 
     public Cliente(Long id, @NotEmpty String name, @NotEmpty String lastName,
                    @Email(message = "email should be a valid email") String email,
-                   String picture, @NotNull Date create) {
+                   String picture, Long phone, @NotNull Date create) {
         this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.email = email;
         this.picture = picture;
+        this.phone = phone;
         this.create = create;
     }
 
     public Cliente() {}
+
+    public Long getPhone() {
+        return phone;
+    }
+
+    public void setPhone(Long phone) {
+        this.phone = phone;
+    }
 
     public Long getId() {
         return id;
