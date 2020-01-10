@@ -13,7 +13,7 @@ public class Picture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_picture;
     @NotEmpty
     private String name;
     @NotNull
@@ -21,20 +21,20 @@ public class Picture {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date create;
 
-    public Picture(Long id, @NotEmpty String name, @NotNull Date create) {
-        this.id = id;
+    public Picture(Long id_picture, @NotEmpty String name, @NotNull Date create) {
+        this.id_picture = id_picture;
         this.name = name;
         this.create = create;
     }
 
     public Picture() {}
 
-    public Long getId() {
-        return id;
+    public Long getId_picture() {
+        return id_picture;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_picture(Long id_picture) {
+        this.id_picture = id_picture;
     }
 
     public String getName() {
