@@ -29,13 +29,19 @@ public class ClientService {
         return clientRepo.save(newClient);
     }
 
-    public Client updateClientById(Long id, Client bus){
-        Client resp = clientRepo.findById(id).get();
-//        resp.setId(id);
-//        if (bus.getDestino() != null)
-//            resp.setDestino(bus.getDestino());
-//        if (bus.getMatricula() != null)
-//            resp.setMatricula(bus.getMatricula());
+    public Client updateClientById(Long id_client, Client client){
+        Client resp = clientRepo.findById(id_client).get();
+        resp.setId_client(id_client);
+        if (client.getEmail() != null)
+            resp.setEmail(client.getEmail());
+        if (client.getLastName() != null)
+            resp.setLastName(client.getLastName());
+        if (client.getName() != null)
+            resp.setName(client.getName());
+        if (client.getPhone() != null)
+            resp.setPhone(client.getPhone());
+        if (client.getPicture() != null)
+            resp.setPicture(client.getPicture());
         return clientRepo.save(resp);
     }
 
