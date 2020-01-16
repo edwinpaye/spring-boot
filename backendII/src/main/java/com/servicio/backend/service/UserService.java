@@ -32,7 +32,7 @@ public class UserService {
 
     public User updateUserById(Long id_user, User user){
         User resp = userRepo.findById(id_user).get();
-        resp.setId_user(id_user);
+        resp.setId(id_user);
         if (user.getEmail() != null)
             resp.setEmail(user.getEmail());
         if (user.getLastName() != null)
