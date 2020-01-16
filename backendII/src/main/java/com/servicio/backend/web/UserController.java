@@ -14,7 +14,7 @@ import java.util.List;
 
 @Controller
 @CrossOrigin
-@RequestMapping("/User")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<User> add(@Valid @RequestBody User newUser){
+    public ResponseEntity<User> add(@RequestBody User newUser){
         return ResponseEntity.ok(userService.addUser(newUser));
     }
 
