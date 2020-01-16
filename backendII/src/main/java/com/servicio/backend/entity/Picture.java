@@ -13,28 +13,30 @@ public class Picture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_picture;
+    private Long id;
     @NotEmpty
     private String name;
+    //create keywor reserbado de mysql
     @NotNull
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "create_at")
     private Date create;
 
-    public Picture(Long id_picture, @NotEmpty String name, @NotNull Date create) {
-        this.id_picture = id_picture;
+    public Picture(Long id, @NotEmpty String name, @NotNull Date create) {
+        this.id = id;
         this.name = name;
         this.create = create;
     }
 
     public Picture() {}
 
-    public Long getId_picture() {
-        return id_picture;
+    public Long getId() {
+        return id;
     }
 
-    public void setId_picture(Long id_picture) {
-        this.id_picture = id_picture;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

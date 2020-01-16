@@ -14,7 +14,7 @@ public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_client;
+    private Long id;
     @NotEmpty
     private String name;
     @NotEmpty
@@ -23,18 +23,20 @@ public class Client {
     @Email(message = "email should be a valid email")
     private String email;
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_picture")
+    @JoinColumn(name = "id")
     private Picture picture;
     private Long phone;
+    //create keywor reserbado de mysql
     @NotNull
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "create_at")
     private Date create;
 
-    public Client(Long id_client, @NotEmpty String name, @NotEmpty String lastName,
+    public Client(Long id, @NotEmpty String name, @NotEmpty String lastName,
                   @Email(message = "email should be a valid email") String email,
                   Picture picture, Long phone, @NotNull Date create) {
-        this.id_client = id_client;
+        this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.email = email;
@@ -53,12 +55,12 @@ public class Client {
         this.phone = phone;
     }
 
-    public Long getId_client() {
-        return id_client;
+    public Long getId() {
+        return id;
     }
 
-    public void setId_client(Long id_client) {
-        this.id_client = id_client;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

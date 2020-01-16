@@ -14,7 +14,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_user;
+    private Long id;
     @NotEmpty
     private String name;
     @NotEmpty
@@ -27,19 +27,21 @@ public class User {
     //direccion
     private String address;
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_picture")
+    @JoinColumn(name = "id")
     private Picture picture;
     private Long phone;
+    //create keywor reserbado de mysql
     @NotNull
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "create_at")
     private Date create;
 
-    public User(Long id_user, @NotEmpty String name, @NotEmpty String lastName,
+    public User(Long id, @NotEmpty String name, @NotEmpty String lastName,
                 @Email(message = "email should be a valid email") String email,
                 @NotEmpty(message = "password must not be empty") String password,
                 String address, Picture picture, Long phone, @NotNull Date create) {
-        this.id_user = id_user;
+        this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.email = email;
@@ -68,12 +70,12 @@ public class User {
         this.address = address;
     }
 
-    public Long getId_user() {
-        return id_user;
+    public Long getId() {
+        return id;
     }
 
-    public void setId_user(Long id_user) {
-        this.id_user = id_user;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

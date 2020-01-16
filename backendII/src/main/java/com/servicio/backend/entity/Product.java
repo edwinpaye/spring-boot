@@ -13,23 +13,25 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_product;
+    private Long id;
     @NotEmpty
     private String name;
     @NotEmpty(message = "picture must not be empty")
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_picture")
+    @JoinColumn(name = "id")
     private Picture picture;
+    //create keywor reserbado de mysql
     @NotNull
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "create_at")
     private Date create;
     private Long price;
     private String author;
 
-    public Product(Long id_product, @NotEmpty String name, Picture picture,
+    public Product(Long id, @NotEmpty String name, Picture picture,
                    @NotNull Date create, Long price, String author) {
-        this.id_product = id_product;
+        this.id = id;
         this.name = name;
         this.picture = picture;
         this.create = create;
@@ -39,12 +41,12 @@ public class Product {
 
     public Product() {}
 
-    public Long getId_product() {
-        return id_product;
+    public Long getId() {
+        return id;
     }
 
-    public void setId_product(Long id_product) {
-        this.id_product = id_product;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
