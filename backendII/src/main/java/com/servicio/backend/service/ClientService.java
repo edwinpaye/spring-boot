@@ -32,7 +32,7 @@ public class ClientService {
 
     public Client updateClientById(Long id_client, Client client){
         Client resp = clientRepo.findById(id_client).get();
-        resp.setId_client(id_client);
+        resp.setId(id_client);
         if (client.getEmail() != null)
             resp.setEmail(client.getEmail());
         if (client.getLastName() != null)
