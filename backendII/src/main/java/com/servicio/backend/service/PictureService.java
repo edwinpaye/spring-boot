@@ -32,7 +32,7 @@ public class PictureService {
 
     public Picture updatePictureById(Long id_Picture, Picture picture){
         Picture resp = pictureRpo.findById(id_Picture).get();
-        resp.setId_picture(id_Picture);
+        resp.setId(id_Picture);
         if (picture.getName() != null)
             resp.setName(picture.getName());
         return pictureRpo.save(resp);
