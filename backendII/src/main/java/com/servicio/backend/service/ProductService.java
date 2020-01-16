@@ -32,7 +32,7 @@ public class ProductService {
 
     public Product updateProductById(Long id_product, Product product){
         Product resp = productRepo.findById(id_product).get();
-        resp.setId_product(id_product);
+        resp.setId(id_product);
         if (product.getAuthor() != null)
             resp.setAuthor(product.getAuthor());
         if (product.getName() != null)
