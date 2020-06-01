@@ -20,11 +20,15 @@ public class Producto {
 
     public Producto() {}
 
-    public Producto(Long id, String nombre, Float precio, Date caducidad) {
-        this.id = id;
+    public Producto(@NotBlank(message = "nombre must not be empty") String nombre, Float precio, @NotBlank(message = "caducidad no debe estar vacio") Date caducidad) {
         this.nombre = nombre;
         this.precio = precio;
         this.caducidad = caducidad;
+    }
+
+    public Producto(Long id, @NotBlank(message = "nombre must not be empty") String nombre, Float precio, @NotBlank(message = "caducidad no debe estar vacio") Date caducidad) {
+        this(nombre, precio, caducidad);
+        this.id = id;
     }
 
     public Long getId() {
