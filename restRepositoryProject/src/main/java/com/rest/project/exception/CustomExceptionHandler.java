@@ -10,7 +10,7 @@ public class CustomExceptionHandler {
 
 //    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({Exception.class})
-    public void fatalUnexpectedException(HttpServletRequest req, Exception e){
-//        return new MensajeError(e, req.getRequestURI());
+    public String fatalUnexpectedException(HttpServletRequest req, Exception e){
+        return e.getMessage();
     }
 }
