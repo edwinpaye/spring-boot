@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 public class CustomExceptionHandler {
 
 //    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler({Exception.class})
-    public String fatalUnexpectedException(HttpServletRequest req, Exception e){
-        return e.getMessage();
-    }
+//    @ExceptionHandler({Exception.class})
+//    public String fatalUnexpectedException(HttpServletRequest req, Exception e){
+//        return e.getMessage();
+//    }
 }
