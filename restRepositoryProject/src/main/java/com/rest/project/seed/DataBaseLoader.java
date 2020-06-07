@@ -17,11 +17,15 @@ public class DataBaseLoader {
     private static final Logger log = LoggerFactory.getLogger(DataBaseLoader.class);
 
     @Value("${deploy.productos}")
-    private boolean deploy;
+    private boolean deployProductos;
+
+    @Value("${deploy.all}")
+    private boolean deployAll;
+
     @Bean
     CommandLineRunner loadProductos(ProductoRepository repository){
         return args -> {
-            if (deploy){
+            if (deployProductos || deployAll){
                 SimpleDateFormat sDF = new SimpleDateFormat("dd-mm-yyyy");
                 try{
                     log.info("Preloading " + repository.save(
