@@ -7,12 +7,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.FIELD})
+@Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = UniqueNombreUsuarioValidator.class)
 public @interface UniqueNombreUsuario {
 
-    String message() default "{com.rest.project.validator.message}";
+    String message() default "{com.rest.project.validator.UniqueNombreUsuario.message}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
