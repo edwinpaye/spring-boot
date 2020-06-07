@@ -12,7 +12,8 @@ public class Rol {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @NotNull(message = "El rolNombre no deve estar vacio")
+    @Column(unique = true)
     private RolNombre rolNombre;
 
     public Rol(int id, RolNombre rolNombre) {
