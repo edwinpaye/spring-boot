@@ -11,9 +11,12 @@ import java.util.Optional;
 @RepositoryRestResource(collectionResourceRel = "productos", path = "productos")
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    @RestResource(path = "findByNombreUsuario", rel = "findByNombreUsuario")
-    public Optional<Usuario> findByNombreUsuario(@Param("nombreUsuario") String nombreUsuario);
+//    @RestResource(path = "findByNombreUsuario", rel = "findByNombreUsuario")
+//    public Optional<Usuario> findByNombreUsuario(@Param("nombreUsuario") String nombreUsuario);
 
     @RestResource(path = "existByNombreUsuario", rel = "existByNombreUsuario")
     public boolean existByNombreUsuario(@Param("nombreUsuario") String nombreUsuario);
+
+    @RestResource(path = "existByEmail", rel = "existByEmail")
+    public boolean existByEmail(@Param("email") String email);
 }
