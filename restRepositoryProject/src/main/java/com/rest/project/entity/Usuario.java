@@ -31,8 +31,10 @@ public class Usuario {
     @JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
     private Set<Rol> roles = new HashSet<>();
 
-    public Usuario(Long id, String nombre, String nombreUsuario, String password, String email, Set<Rol> roles) {
-        this.id = id;
+    public Usuario() {
+    }
+
+    public Usuario(String nombre, String nombreUsuario, String password, String email, Set<Rol> roles) {
         this.nombre = nombre;
         this.nombreUsuario = nombreUsuario;
         this.password = password;

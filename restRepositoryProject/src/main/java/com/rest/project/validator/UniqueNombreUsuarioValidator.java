@@ -8,8 +8,12 @@ import javax.validation.ConstraintValidatorContext;
 
 public class UniqueNombreUsuarioValidator implements ConstraintValidator<UniqueNombreUsuario, String> {
 
-    @Autowired
+//    @Autowired
     private UsuarioRepository usuarioRepo;
+
+    public UniqueNombreUsuarioValidator(UsuarioRepository usuarioRepo) {
+        this.usuarioRepo = usuarioRepo;
+    }
 
     @Override
     public void initialize(UniqueNombreUsuario constraintAnnotation) {
@@ -18,6 +22,6 @@ public class UniqueNombreUsuarioValidator implements ConstraintValidator<UniqueN
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        return usuarioRepo.existByNombreUsuario(s);
+        return !usuarioRepo.findByNombreUsuario(s).isPresent();
     }
 }

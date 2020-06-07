@@ -1,7 +1,10 @@
 package com.rest.project.seed;
 
 import com.rest.project.entity.Producto;
+import com.rest.project.entity.Rol;
+import com.rest.project.enums.RolNombre;
 import com.rest.project.repository.ProductoRepository;
+import com.rest.project.repository.RolRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +21,9 @@ public class DataBaseLoader {
 
     @Value("${deploy.productos}")
     private boolean deployProductos;
+
+    @Value("${deploy.roles}")
+    private boolean deployRoles;
 
     @Value("${deploy.all}")
     private boolean deployAll;
@@ -36,6 +42,20 @@ public class DataBaseLoader {
                             new Producto("Helado", 50.50f, sDF.parse("3-4-2021"))));
                 }catch (Exception e){
                     log.error("Error en el metodo loadProductos. " + e.getMessage());
+                }
+            }
+        };
+    }
+
+    @Bean
+    CommandLineRunner loadRols(RolRepository rolRepository){
+        return args -> {
+            if (deployRoles || deployAll){
+                try {
+                    log.info("Preloading " + rolRepository.save(new Rol(RolNombre.ROLE_ADMIN)));
+                    log.info("Preloading " + rolRepository.save(new Rol(RolNombre.ROLE_USER)));
+                }catch (Exception e){
+                    log.error("Error en el metodo loadRols. " + e.getMessage());
                 }
             }
         };

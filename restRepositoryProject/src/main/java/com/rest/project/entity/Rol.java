@@ -16,8 +16,10 @@ public class Rol {
     @Column(unique = true)
     private RolNombre rolNombre;
 
-    public Rol(int id, RolNombre rolNombre) {
-        this.id = id;
+    public Rol() {
+    }
+
+    public Rol(RolNombre rolNombre) {
         this.rolNombre = rolNombre;
     }
 
