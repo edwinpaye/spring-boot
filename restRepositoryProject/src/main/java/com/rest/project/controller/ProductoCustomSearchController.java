@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.data.rest.webmvc.RepositorySearchesResource;
+import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.EntityModel;
@@ -33,16 +34,23 @@ public class ProductoCustomSearchController implements RepresentationModelProces
     @Autowired
     PagedResourcesAssembler<Producto> assembler;
 
+    @Autowired
+    RepositoryEntityLinks repositoryEntityLinks;
+
     @GetMapping(path = "find")
     public ResponseEntity<?> customfindByDate(@Param("date") String date, @PageableDefault Pageable page) throws ParseException {
         Page p = productoRepo.findByCaducidad(new SimpleDateFormat("dd-MM-yyyy").parse(date), page);
-        return ResponseEntity.ok(assembler.toModel(p, (person)-> EntityModel.of(person)));
+        return ResponseEntity.ok(assembler.toModel(p, producto -> {
+            Link productoLink = repositoryEntityLinks.linkToItemResource(Producto.class, producto.getId());
+            return EntityModel.of(producto).add(
+                productoLink.withSelfRel(), productoLink
+        );}));
     }
 
     @Override
     public RepositorySearchesResource process(RepositorySearchesResource model) {
         final Link link = linkTo(ProductoCustomSearchController.class)
-                .slash("find?date=02-06-2020&page=0&size=1&sort=caducidad,asc").withRel("findByDate");
+                .slash("find?date=dd-mm-yyyy&page=0&size=1&sort=caducidad,asc").withRel("findByDate");
         model.add(link);
         return model;
     }
