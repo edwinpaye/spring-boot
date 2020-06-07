@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UniqueNombreUsuarioValidator.class)
-public @interface UniqueNombreUsuario {
+@Constraint(validatedBy = UniqueEmailValidator.class)
+public @interface UniqueEmail {
 
     String message() default "{com.rest.project.validator.message}";
     Class<?>[] groups() default {};
