@@ -3,7 +3,6 @@ package com.rest.project.entity;
 import com.rest.project.enums.RolNombre;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 public class Rol {
@@ -12,7 +11,6 @@ public class Rol {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "El rolNombre no deve estar vacio")
     @Column(unique = true)
     private RolNombre rolNombre;
 
