@@ -2,17 +2,18 @@ package com.rest.project.validator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import javax.validation.constraints.NotBlank;
+import java.lang.annotation.*;
 
+@Documented
 @Target({ElementType.METHOD, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = UniqueNombreUsuarioValidator.class)
+@NotBlank(message = "El nombreUsuario no deve estar vacio")
 public @interface UniqueNombreUsuario {
 
-    String message() default "{com.rest.project.validator.UniqueNombreUsuario.message}";
+//    String message() default "{com.rest.project.validator.UniqueNombreUsuario.message}";
+    String message() default "other note nombre usuario";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

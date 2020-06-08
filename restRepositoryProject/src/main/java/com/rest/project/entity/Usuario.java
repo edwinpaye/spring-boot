@@ -1,11 +1,6 @@
 package com.rest.project.entity;
 
-import com.rest.project.validator.UniqueEmail;
-import com.rest.project.validator.UniqueNombreUsuario;
-
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,17 +10,9 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank(message = "El nombre no deve estar vacio")
     private String nombre;
-    @UniqueNombreUsuario
-    @Column(unique = true)
     private String nombreUsuario;
-    @NotBlank(message = "El password no deve estar vacio")
     private String password;
-    @NotBlank(message = "El email no deve estar vacio")
-    @Email(message = "Email no valido")
-    @UniqueEmail
-    @Column(unique = true)
     private String email;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
