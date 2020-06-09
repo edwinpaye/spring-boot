@@ -7,10 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Date;
 
-@RepositoryRestResource(collectionResourceRel = "producto", path = "producto")
+@CrossOrigin(origins = "*")
+@RepositoryRestResource(collectionResourceRel = "producto", path = "api/producto")
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
     @RestResource(path = "nombreEmpiesaCon", rel = "nombreStartsWith")
