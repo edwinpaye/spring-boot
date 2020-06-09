@@ -1,6 +1,6 @@
 package com.rest.project.security;
 
-import com.inezpre5.angularjwt.entity.Usuario;
+import com.rest.project.entity.Usuario;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
