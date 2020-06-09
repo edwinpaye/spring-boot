@@ -1,16 +1,13 @@
-package com.inezpre5.angularjwt.controller;
+package com.rest.project.controller;
 
-import com.inezpre5.angularjwt.DTO.JwtDTO;
-import com.inezpre5.angularjwt.DTO.LoginUsuario;
-import com.inezpre5.angularjwt.DTO.Mensaje;
-import com.inezpre5.angularjwt.DTO.NuevoUsuario;
-import com.inezpre5.angularjwt.entity.Rol;
-import com.inezpre5.angularjwt.entity.Usuario;
-import com.inezpre5.angularjwt.enums.RolNombre;
-import com.inezpre5.angularjwt.security.JWT.JwtProvider;
-import com.inezpre5.angularjwt.service.RolService;
-import com.inezpre5.angularjwt.service.UsuarioService;
-import com.inezpre5.angularjwt.validation.NuevoUsuarioValidator;
+import com.rest.project.dto.JwtDTO;
+import com.rest.project.dto.LoginUsuario;
+import com.rest.project.entity.Rol;
+import com.rest.project.entity.Usuario;
+import com.rest.project.enums.RolNombre;
+import com.rest.project.repository.RolRepository;
+import com.rest.project.repository.UsuarioRepository;
+import com.rest.project.security.JWT.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,51 +30,47 @@ import java.util.Set;
 public class AuthController {
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    UsuarioService usuarioService;
+    private UsuarioRepository usuarioRepository;
 
     @Autowired
-    RolService rolService;
+    private RolRepository rolRepository;
 
     @Autowired
-    JwtProvider jwtProvider;
-
-    @Autowired
-    NuevoUsuarioValidator nuevoUsuarioValidator;
+    private JwtProvider jwtProvider;
 
     @PostMapping("/nuevo")
-    public ResponseEntity<?> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
-        nuevoUsuarioValidator.validate(nuevoUsuario, bindingResult, usuarioService);
-        Usuario usuario =
-                new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
+    public ResponseEntity<?> nuevo(@Valid @RequestBody Usuario nuevoUsuario, BindingResult bindingResult){
+//        nuevoUsuarioValidator.validate(nuevoUsuario, bindingResult, usuarioService);
+        Usuario usuario = new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
                         passwordEncoder.encode(nuevoUsuario.getPassword()));
-        Set<String> rolesStr = nuevoUsuario.getRoles();
+        Set<Rol> rolesStr = nuevoUsuario.getRoles();
         Set<Rol> roles = new HashSet<>();
-        for (String rol : rolesStr) {
-            switch (rol) {
-                case "admin":
-                    Rol rolAdmin = rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get();
+        for (Rol rol : rolesStr) {
+            switch (rol.getRolNombre()) {
+                case ROLE_ADMIN:
+                    Rol rolAdmin = rolRepository.findByRolNombre(RolNombre.ROLE_ADMIN).get();
                     roles.add(rolAdmin);
                     break;
                 default:
-                    Rol rolUser = rolService.getByRolNombre(RolNombre.ROLE_USER).get();
+                    Rol rolUser = rolRepository.findByRolNombre(RolNombre.ROLE_USER).get();
                     roles.add(rolUser);
             }
         }
         usuario.setRoles(roles);
-        usuarioService.guardar(usuario);
-        return new ResponseEntity(new Mensaje("usuario guardado"), HttpStatus.CREATED);
+        usuarioRepository.save(usuario);
+        return new ResponseEntity("usuario guardado", HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
     public ResponseEntity<JwtDTO> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){
-        if(bindingResult.hasErrors())
-            return new ResponseEntity(new Mensaje("campos vacíos o email inválido"), HttpStatus.BAD_REQUEST);
+//        if(bindingResult.hasErrors())
+//            return new ResponseEntity(new Mensaje("campos vacíos o email inválido"), HttpStatus.BAD_REQUEST);
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginUsuario.getNombreUsuario(), loginUsuario.getPassword())
         );
