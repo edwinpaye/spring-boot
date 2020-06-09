@@ -1,13 +1,9 @@
 package com.rest.project.dto;
 
-import javax.validation.constraints.NotBlank;
-
 public class LoginUsuario {
 
-    @NotBlank(message = "nombre usuario must not be empty")
     private String nombreUsuario;
 
-    @NotBlank(message = "password must not be empty")
     private String password;
 
 
