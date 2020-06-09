@@ -1,6 +1,6 @@
 package com.rest.project.security.JWT;
 
-import com.inezpre5.angularjwt.service.UserDetailsServiceImpl;
+import com.rest.project.service.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     JwtProvider jwtProvider;
 
     @Autowired
-    UserDetailsServiceImpl userDetailsServiceImpl;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
