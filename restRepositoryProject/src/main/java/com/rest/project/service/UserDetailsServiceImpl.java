@@ -1,7 +1,8 @@
 package com.rest.project.service;
 
-import com.inezpre5.angularjwt.entity.Usuario;
-import com.inezpre5.angularjwt.security.UsuarioPrincipal;
+import com.rest.project.entity.Usuario;
+import com.rest.project.repository.UsuarioRepository;
+import com.rest.project.security.UsuarioPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,12 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    UsuarioService usuarioService;
+    private UsuarioRepository usuarioService;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String nombreUsuario) throws UsernameNotFoundException {
-        Usuario usuario = usuarioService.getByNombreUsuario(nombreUsuario).get();
+        Usuario usuario = usuarioService.findByNombreUsuario(nombreUsuario).get();
         return UsuarioPrincipal.build(usuario);
     }
 }
