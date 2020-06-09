@@ -1,6 +1,6 @@
 package com.rest.project.security.JWT;
 
-import com.inezpre5.angularjwt.security.UsuarioPrincipal;
+import com.rest.project.security.UsuarioPrincipal;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
