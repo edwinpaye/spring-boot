@@ -1,12 +1,11 @@
 package com.rest.project.security;
 
-import com.inezpre5.angularjwt.security.JWT.JwtEntryPoint;
-import com.inezpre5.angularjwt.security.JWT.JwtTokenFilter;
-import com.inezpre5.angularjwt.service.UserDetailsServiceImpl;
+import com.rest.project.security.JWT.JwtEntryPoint;
+import com.rest.project.security.JWT.JwtTokenFilter;
+import com.rest.project.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -24,10 +23,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    UserDetailsServiceImpl userDetailsServiceImpl;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
-    JwtEntryPoint jwtEntryPoint;
+    private JwtEntryPoint jwtEntryPoint;
 
     @Bean
     public JwtTokenFilter jwtTokenFilter(){
