@@ -10,7 +10,7 @@ import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.Date;
 
-@RepositoryRestResource(collectionResourceRel = "productos", path = "productos")
+@RepositoryRestResource(collectionResourceRel = "producto", path = "producto")
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
     @RestResource(path = "nombreEmpiesaCon", rel = "nombreStartsWith")

@@ -14,7 +14,7 @@ import java.util.Map;
 public class ValidatorEventRegister implements InitializingBean {
 
     @Autowired
-    ValidatingRepositoryEventListener listener;
+    private ValidatingRepositoryEventListener listener;
 
     @Autowired
     private Map<String, Validator> validators;

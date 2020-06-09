@@ -23,19 +23,18 @@ import java.text.SimpleDateFormat;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
-
 @BasePathAwareController
-@RequestMapping("productos/search")
+@RequestMapping("producto/search")
 public class ProductoCustomSearchController implements RepresentationModelProcessor<RepositorySearchesResource> {
 
     @Autowired
-    ProductoRepository productoRepo;
+    private ProductoRepository productoRepo;
 
     @Autowired
-    PagedResourcesAssembler<Producto> assembler;
+    private PagedResourcesAssembler<Producto> assembler;
 
     @Autowired
-    RepositoryEntityLinks repositoryEntityLinks;
+    private RepositoryEntityLinks repositoryEntityLinks;
 
     @GetMapping(path = "find")
     public ResponseEntity<?> customfindByDate(@Param("date") String date, @PageableDefault Pageable page) throws ParseException {
