@@ -14,9 +14,9 @@ import java.util.Date;
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
     @RestResource(path = "nombreEmpiesaCon", rel = "nombreStartsWith")
-    public Page findByNombreStartsWith(@Param("name") String name, Pageable page);
+    Page findByNombreStartsWith(@Param("name") String name, Pageable page);
 
     @RestResource(exported = false)
-    public Page findByCaducidad(Date date, Pageable page);
+    Page findByCaducidad(Date date, Pageable page);
 
 }
