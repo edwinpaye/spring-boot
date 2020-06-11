@@ -1,4 +1,6 @@
 package com.rest.project.dto;
 
-public class AuthLinksResource {
+import org.springframework.hateoas.RepresentationModel;
+
+public class AuthLinksResource extends RepresentationModel<AuthLinksResource> {
 }

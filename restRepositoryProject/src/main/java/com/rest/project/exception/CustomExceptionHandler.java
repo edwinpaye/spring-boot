@@ -53,8 +53,15 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public ExceptionMessage unexpectedException(HttpServletRequest req, Exception e){
-        return new ExceptionMessage(new Date(), e.getMessage(), req.getRequestURI(), e.getCause().getLocalizedMessage());
+    public ExceptionMessage unexpectedException(Exception e){
+        return new ExceptionMessage(new Date(), e.getMessage(), "req.getContextPath()", e.getCause().getLocalizedMessage());
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(RuntimeException.class)
+    public String runtimeException(RuntimeException e){
+        log.error("aqui" + e);
+        return e.getMessage();
     }
 
     @Override

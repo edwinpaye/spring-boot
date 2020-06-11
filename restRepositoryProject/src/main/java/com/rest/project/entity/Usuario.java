@@ -1,5 +1,7 @@
 package com.rest.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +14,7 @@ public class Usuario {
     private Long id;
     private String nombre;
     private String nombreUsuario;
+    @JsonIgnore
     private String password;
     private String email;
     @ManyToMany(fetch = FetchType.EAGER)
