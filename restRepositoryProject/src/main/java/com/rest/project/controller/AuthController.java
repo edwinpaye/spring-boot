@@ -2,6 +2,7 @@ package com.rest.project.controller;
 
 import com.rest.project.dto.JwtDTO;
 import com.rest.project.dto.LoginUsuario;
+import com.rest.project.dto.NuevoUsuario;
 import com.rest.project.entity.Rol;
 import com.rest.project.entity.Usuario;
 import com.rest.project.enums.RolNombre;
@@ -45,15 +46,15 @@ public class AuthController {
     private JwtProvider jwtProvider;
 
     @PostMapping("/nuevo")
-    public ResponseEntity<?> nuevo(@Valid @RequestBody Usuario nuevoUsuario, BindingResult bindingResult){
+    public ResponseEntity<?> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
 //        nuevoUsuarioValidator.validate(nuevoUsuario, bindingResult, usuarioService);
         Usuario usuario = new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getNombreUsuario(), nuevoUsuario.getEmail(),
                         passwordEncoder.encode(nuevoUsuario.getPassword()));
-        Set<Rol> rolesStr = nuevoUsuario.getRoles();
+        Set<String> rolesStr = nuevoUsuario.getRoles();
         Set<Rol> roles = new HashSet<>();
-        for (Rol rol : rolesStr) {
-            switch (rol.getRolNombre()) {
-                case ROLE_ADMIN:
+        for (String rol : rolesStr) {
+            switch (rol) {
+                case "admin":
                     Rol rolAdmin = rolRepository.findByRolNombre(RolNombre.ROLE_ADMIN).get();
                     roles.add(rolAdmin);
                     break;

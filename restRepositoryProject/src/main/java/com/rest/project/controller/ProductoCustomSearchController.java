@@ -15,6 +15,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.RepresentationModelProcessor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -23,8 +24,9 @@ import java.text.SimpleDateFormat;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
+@CrossOrigin(origins = "*")
 @BasePathAwareController
-@RequestMapping("producto/search")
+@RequestMapping("api/producto/search")
 public class ProductoCustomSearchController implements RepresentationModelProcessor<RepositorySearchesResource> {
 
     @Autowired
