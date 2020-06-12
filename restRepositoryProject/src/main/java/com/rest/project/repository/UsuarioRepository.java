@@ -18,17 +18,19 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     @RestResource(path = "nombreEmpiesaCon", rel = "nombreStartsWith")
     Page findByNombreStartsWith(@Param("name") String name, Pageable page);
 
-    //    @RestResource(path = "findByNombreUsuario", rel = "findByNombreUsuario")
     @RestResource(exported = false)
     Optional<Usuario> findByNombreUsuario( String nombreUsuario);
 
-//    @RestResource(path = "findByEmail", rel = "findByEmail")
     @RestResource(exported = false)
     Optional<Usuario> findByEmail(String email);
 
     @PreAuthorize("hasRole('USER')")
     @Override
     List<Usuario> findAll();
+
+    @PreAuthorize("hasRole('USER')")
+    @Override
+    Page<Usuario> findAll(Pageable pageable);
 
     @PreAuthorize("hasRole('USER')")
     @Override

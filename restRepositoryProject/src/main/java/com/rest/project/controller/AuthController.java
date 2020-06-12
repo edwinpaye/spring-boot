@@ -12,14 +12,10 @@ import com.rest.project.repository.UsuarioRepository;
 import com.rest.project.security.JWT.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
-import org.springframework.data.rest.webmvc.RepositoryLinksResource;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.LinkRelation;
-import org.springframework.hateoas.RepresentationModel;
-import org.springframework.hateoas.server.RepresentationModelProcessor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +36,9 @@ import java.util.Set;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@BasePathAwareController
-@RequestMapping("/auth")
+//@BasePathAwareController
+@RepositoryRestController
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
@@ -59,26 +56,13 @@ public class AuthController {
     @Autowired
     private JwtProvider jwtProvider;
 
-    @Autowired
-    RepositoryEntityLinks repositoryEntityLinks;
-
     @PostMapping("/nuevo")
-    public ResponseEntity<?> nuevo(@RequestBody NuevoUsuario nuevoUsuario/*, BindingResult bindingResult*/){
+    public ResponseEntity<?> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario/*, BindingResult bindingResult*/){
         Usuario usuario = new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getNombreUsuario(),
                 passwordEncoder.encode(nuevoUsuario.getPassword()), nuevoUsuario.getEmail());
-//        Set<String> rolesStr = nuevoUsuario.getRoles();
         Set<Rol> roles = new HashSet<>();
-//        for (String rol : rolesStr) {
-//            switch (rol) {
-//                case "admin":
-//                    Rol rolAdmin = rolRepository.findByRolNombre(RolNombre.ROLE_ADMIN).get();
-//                    roles.add(rolAdmin);
-//                    break;
-//                default:
         Rol rolUser = rolRepository.findByRolNombre(RolNombre.ROLE_USER).get();
         roles.add(rolUser);
-//            }
-//        }
         usuario.setRoles(roles);
         usuarioRepository.save(usuario);
         return new ResponseEntity("usuario guardado", HttpStatus.CREATED);
@@ -87,13 +71,12 @@ public class AuthController {
     @GetMapping("/hola")
     public ResponseEntity<?> getdatos(){
         return  ResponseEntity.ok(EntityModel.of("hola",
-                repositoryEntityLinks.linkFor(AuthController.class).slash("hola").withSelfRel()));
+                Link.of(ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString()).withRel("basePath"),
+                Link.of(ServletUriComponentsBuilder.fromCurrentRequest().toUriString()).withSelfRel()));
     }
 
     @PostMapping("/login")
     public ResponseEntity<JwtDTO> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){
-//        if(bindingResult.hasErrors())
-//            return new ResponseEntity(new Mensaje("campos vacíos o email inválido"), HttpStatus.BAD_REQUEST);
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginUsuario.getNombreUsuario(), loginUsuario.getPassword())
         );
@@ -108,9 +91,11 @@ public class AuthController {
     public HttpEntity<AuthLinksResource> listMethods(){
         AuthLinksResource resource = new AuthLinksResource();
         resource.add(linkTo(methodOn(AuthController.class).nuevo(null)).withRel(LinkRelation.of("createAcount")),
+                //es mejor linkTo para obtener uris de this.Controller
                 linkTo(methodOn(AuthController.class).login(null, null)).withRel(LinkRelation.of("login")),
                 linkTo(methodOn(AuthController.class).getdatos()).withRel(LinkRelation.of("hola")),
-                linkTo(methodOn(AuthController.class).listMethods()).withSelfRel());
+                //es mejor trbajar con ServletUriComponentBuilder para obtener el uri del request
+                Link.of(ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString()).withSelfRel());
         return ResponseEntity.ok(resource);
     }
 
