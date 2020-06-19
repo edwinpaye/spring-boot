@@ -1,19 +1,26 @@
 package com.rest.project.exception;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ExceptionMessage {
 
-    private Date timestamp;
     private String message;
+    private Date timestamp;
     private String path;
-    private String details;
+    private List<String> details;
 
-    public ExceptionMessage(Date timestamp, String message, String path, String details) {
-        this.timestamp = timestamp;
+    public ExceptionMessage(String message, Date timestamp, String path, List<String> details) {
         this.message = message;
+        this.timestamp = timestamp;
         this.path = path;
         this.details = details;
+    }
+
+    public ExceptionMessage(String message, Date timestamp, String path, String details) {
+        this(message, timestamp, path, new ArrayList<String>());
+        this.details.add(details);
     }
 
     public Date getTimestamp() {
@@ -40,11 +47,11 @@ public class ExceptionMessage {
         this.path = path;
     }
 
-    public String getDetails() {
+    public List<String> getDetails() {
         return details;
     }
 
-    public void setDetails(String details) {
+    public void setDetails(List<String> details) {
         this.details = details;
     }
 }

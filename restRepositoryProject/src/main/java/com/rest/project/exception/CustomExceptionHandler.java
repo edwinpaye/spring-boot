@@ -44,23 +44,23 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ResponseStatus(HttpStatus.PARTIAL_CONTENT)
     @ExceptionHandler({RepositoryConstraintViolationException.class})
-    public String handleAccessDeniedException(Exception ex, WebRequest request){
+    public ExceptionMessage handleAccessDeniedException(Exception ex, WebRequest request){
         RepositoryConstraintViolationException violationException = (RepositoryConstraintViolationException) ex;
-        String errors = violationException.getErrors().getAllErrors().stream()
-                .map(objectError -> objectError.toString()).collect(Collectors.joining("\n"));
-        return errors;
+        return new ExceptionMessage(ex.getMessage(), new Date(), request.getContextPath(),
+                violationException.getErrors().getAllErrors().stream().map(
+                        objectError -> objectError.toString()).collect(Collectors.toList()));
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(Exception.class)
-    public ExceptionMessage unexpectedException(Exception e){
-        return new ExceptionMessage(new Date(), e.getMessage(), "req.getContextPath()", e.getCause().getLocalizedMessage());
-    }
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    @ExceptionHandler(Exception.class)
+//    public ExceptionMessage unexpectedException(Exception e){
+//        return new ExceptionMessage(new Date(), e.getMessage(), "req.getContextPath()", e.getCause().getLocalizedMessage());
+//    }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(RuntimeException.class)
     public String runtimeException(RuntimeException e){
-        log.error("aqui" + e);
+        log.error("aqui " + e);
         return e.getMessage();
     }
 

@@ -10,7 +10,10 @@ import com.rest.project.enums.RolNombre;
 import com.rest.project.repository.RolRepository;
 import com.rest.project.repository.UsuarioRepository;
 import com.rest.project.security.JWT.JwtProvider;
+import com.rest.project.validator.NuevoUsuarioValidator;
+import com.rest.project.validator.UsuarioValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.core.RepositoryConstraintViolationException;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.hateoas.EntityModel;
@@ -36,7 +39,6 @@ import java.util.Set;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-//@BasePathAwareController
 @RepositoryRestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -51,13 +53,19 @@ public class AuthController {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private NuevoUsuarioValidator usuarioValidator;
+
+    @Autowired
     private RolRepository rolRepository;
 
     @Autowired
     private JwtProvider jwtProvider;
 
     @PostMapping("/nuevo")
-    public ResponseEntity<?> nuevo(@Valid @RequestBody NuevoUsuario nuevoUsuario/*, BindingResult bindingResult*/){
+    public ResponseEntity<?> nuevo(@RequestBody NuevoUsuario nuevoUsuario, BindingResult bindingResult){
+        usuarioValidator.validate(nuevoUsuario, bindingResult);
+        if (bindingResult.hasErrors())
+            throw new RepositoryConstraintViolationException(bindingResult);
         Usuario usuario = new Usuario(nuevoUsuario.getNombre(), nuevoUsuario.getNombreUsuario(),
                 passwordEncoder.encode(nuevoUsuario.getPassword()), nuevoUsuario.getEmail());
         Set<Rol> roles = new HashSet<>();
@@ -76,7 +84,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JwtDTO> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){
+    public ResponseEntity<JwtDTO> login(@RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginUsuario.getNombreUsuario(), loginUsuario.getPassword())
         );
@@ -90,7 +98,7 @@ public class AuthController {
     @GetMapping({"", "/"})
     public HttpEntity<AuthLinksResource> listMethods(){
         AuthLinksResource resource = new AuthLinksResource();
-        resource.add(linkTo(methodOn(AuthController.class).nuevo(null)).withRel(LinkRelation.of("createAcount")),
+        resource.add(linkTo(methodOn(AuthController.class).nuevo(null, null)).withRel(LinkRelation.of("createAcount")),
                 //es mejor linkTo para obtener uris de this.Controller
                 linkTo(methodOn(AuthController.class).login(null, null)).withRel(LinkRelation.of("login")),
                 linkTo(methodOn(AuthController.class).getdatos()).withRel(LinkRelation.of("hola")),
