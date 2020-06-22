@@ -56,4 +56,10 @@ public class OrdenCustomController {
 
         return null;
     }
+
+    @PostMapping("/orden/{id}/fulfill")
+    public ResponseEntity<EntityModel<Orden>> fulfillOrder(@PathVariable Long id){
+        
+        return null;
+    }
 }

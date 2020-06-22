@@ -4,7 +4,7 @@ public enum OrderStatus {
 
     BEING_CREATED, PAID_FOR, FULFILLED, CANCELED;
 
-    static boolean valid(OrderStatus currentStatus, OrderStatus newStatus) throws RuntimeException{
+    public static boolean valid(OrderStatus currentStatus, OrderStatus newStatus){
 //        return switch(currentStatus){
 //            case BEING_CREATED -> newStatus==PAID_FOR||newStatus==CANCELED;
 //            case PAID_FOR -> newStatus==FULFILLED;
