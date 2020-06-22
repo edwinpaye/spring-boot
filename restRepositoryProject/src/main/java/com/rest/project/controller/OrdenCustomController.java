@@ -4,6 +4,7 @@ import com.rest.project.entity.Orden;
 import com.rest.project.repository.OrdenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -28,7 +29,7 @@ public class OrdenCustomController {
     private RepositoryEntityLinks repositoryEntityLinks;
 
     @PostMapping("/orden")
-    public ResponseEntity<?> saveOrden(@RequestBody Long[] productosId){
+    public ResponseEntity<?> saveOrder(@RequestBody Long[] productosId){
         if (productosId.length<1)
             return ResponseEntity.badRequest().body("orden vacia");
         Orden orden = repository.save(new Orden(
@@ -49,7 +50,10 @@ public class OrdenCustomController {
         )).map(ResponseEntity::ok).orElseThrow(RuntimeException::new);
     }
 
-    public ResponseEntity<EntityModel<Orden>> cancelOrder(){
+    @PostMapping("/orden/{id}/cancel")
+    public ResponseEntity<EntityModel<Orden>> cancelOrder(@PathVariable Long id){
+        Orden orden = repository.findById(id).orElseThrow(ResourceNotFoundException::new);
 
+        return null;
     }
 }

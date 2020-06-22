@@ -33,10 +33,10 @@ public class ProductoCustomSearchController {
     @GetMapping(path = "/producto/search/findByCaducidad")
     public ResponseEntity<?> customfindByDate(@Param("date") String date, @PageableDefault Pageable page) throws ParseException {
         Page p = productoRepo.findByCaducidad(new SimpleDateFormat("dd-MM-yyyy").parse(date), page);
-        return ResponseEntity.ok(assembler.toModel(p, producto -> EntityModel.of(producto).add(
+        return ResponseEntity.ok(assembler.toModel(p, producto -> EntityModel.of(producto,
                 //es mejor trabar con RepositoryEntityLinks para obtener uris de otros repositoryControllers
                 repositoryEntityLinks.linkForItemResource(ProductoRepository.class, producto.getId()).withSelfRel()
-        )).add(repositoryEntityLinks.linkToSearchResource(
+        ), repositoryEntityLinks.linkToSearchResource(
                 Producto.class, LinkRelation.of("findByCaducidad"), (Pageable) null
         ).withRel("basePath")));
     }
