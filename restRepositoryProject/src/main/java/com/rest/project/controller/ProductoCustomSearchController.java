@@ -22,13 +22,13 @@ import java.text.SimpleDateFormat;
 public class ProductoCustomSearchController {
 
     @Autowired
-    ProductoRepository productoRepo;
+    private ProductoRepository productoRepo;
 
     @Autowired
-    PagedResourcesAssembler<Producto> assembler;
+    private PagedResourcesAssembler<Producto> assembler;
 
     @Autowired
-    RepositoryEntityLinks repositoryEntityLinks;
+    private RepositoryEntityLinks repositoryEntityLinks;
 
     @GetMapping(path = "/producto/search/findByCaducidad")
     public ResponseEntity<?> customfindByDate(@Param("date") String date, @PageableDefault Pageable page) throws ParseException {
